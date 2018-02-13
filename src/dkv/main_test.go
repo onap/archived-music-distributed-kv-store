@@ -16,17 +16,4 @@
 
 package main
 
-import (
-	"dkv/api"
-	"github.com/gorilla/mux"
-	"log"
-	"net/http"
-)
-
-func main() {
-	router := mux.NewRouter()
-	router.HandleFunc("/loadconfigs", api.HandlePOST).Methods("POST")
-	router.HandleFunc("/getconfig/{key}", api.HandleGET).Methods("GET")
-	router.HandleFunc("/getconfigs", api.HandleGETS).Methods("GET")
-	log.Fatal(http.ListenAndServe(":8080", router))
-}
+//  TODO (sshank)
