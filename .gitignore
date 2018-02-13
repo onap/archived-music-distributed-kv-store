@@ -3,3 +3,7 @@
 consul
 .DS_Store
 vendor/
+bin/
+pkg/
+target/
+src/github.com/
