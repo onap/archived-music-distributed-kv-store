@@ -17,8 +17,8 @@
 package main
 
 import (
-	"github.com/gorilla/mux"
 	"dkv/api"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
