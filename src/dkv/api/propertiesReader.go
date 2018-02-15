@@ -20,54 +20,94 @@ import (
 	"errors"
 	"github.com/magiconair/properties"
 	"io/ioutil"
+	"log"
 	"path"
 	"runtime"
+	"sync"
 )
 
-func PropertiesFilesToKV(directory string) (map[string]string, error) {
+type KeyValuesInterface interface {
+	WriteKVsToConsul() error
+	ReadConfigs(POSTBodyStruct) error
+	PropertiesFilesToKV(string) error
+	ReadMultipleProperties(string) error
+	ReadProperty(string)
+}
+
+type KeyValuesStruct struct {
+	sync.RWMutex
+	kvs map[string]string
+}
+
+var KeyValues KeyValuesInterface
+
+func (kvStruct *KeyValuesStruct) WriteKVsToConsul() error {
+	for key, value := range kvStruct.kvs {
+		err := Consul.requestPUT(key, value)
+		if err != nil {
+			return err
+		}
+		log.Println("[INFO] Key: ", key, "| Value: ", value)
+	}
+	log.Println("[INFO] Wrote KVs to Consul.")
+	return nil
+}
+
+func (kvStruct *KeyValuesStruct) ReadConfigs(body POSTBodyStruct) error {
+	defer kvStruct.Unlock()
+
+	kvStruct.Lock()
+
+	err := kvStruct.PropertiesFilesToKV(body.Type.FilePath)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (kvStruct *KeyValuesStruct) PropertiesFilesToKV(directory string) error {
+
 	if directory == "default" {
-		kvs := make(map[string]string)
-
 		_, filename, _, ok := runtime.Caller(0)
-
 		if !ok {
-			return nil, errors.New("No caller")
+			return errors.New("No caller")
 		}
 
-		configDir := path.Dir(filename) + "/../configurations/"
-		err := ReadMultipleProperties(configDir, kvs)
+		defaultDir := path.Dir(filename) + "/../configurations/"
+		err := kvStruct.ReadMultipleProperties(defaultDir)
 		if err != nil {
-			return nil, err
+			return err
 		}
-		return kvs, nil
+
+		return nil
+
 	} else {
-		// Add case if directory is not there.
-		kvs := make(map[string]string)
 		directory += "/"
-		err := ReadMultipleProperties(directory, kvs)
+		err := kvStruct.ReadMultipleProperties(directory)
 		if err != nil {
-			return nil, err
+			return err
 		}
-		return kvs, nil
+
+		return nil
 	}
 }
 
-func ReadProperty(path string, kvs map[string]string) {
-	p := properties.MustLoadFile(path, properties.UTF8)
-	for _, key := range p.Keys() {
-		kvs[key] = p.MustGet(key)
-	}
-}
-
-func ReadMultipleProperties(path string, kvs map[string]string) error {
+func (kvStruct *KeyValuesStruct) ReadMultipleProperties(path string) error {
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
 		return err
 	}
 
 	for _, f := range files {
-		ReadProperty(path+f.Name(), kvs)
+		kvStruct.ReadProperty(path + f.Name())
 	}
 
 	return nil
+}
+
+func (kvStruct *KeyValuesStruct) ReadProperty(path string) {
+	p := properties.MustLoadFile(path, properties.UTF8)
+	for _, key := range p.Keys() {
+		kvStruct.kvs[key] = p.MustGet(key)
+	}
 }

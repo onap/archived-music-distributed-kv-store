@@ -18,15 +18,23 @@ package main
 
 import (
 	"dkv/api"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
+	err := api.Initialise()
+	if err != nil {
+		log.Fatal(err)
+	}
 	router := mux.NewRouter()
 	router.HandleFunc("/loadconfigs", api.HandlePOST).Methods("POST")
 	router.HandleFunc("/getconfig/{key}", api.HandleGET).Methods("GET")
 	router.HandleFunc("/getconfigs", api.HandleGETS).Methods("GET")
-	log.Fatal(http.ListenAndServe(":8080", router))
+	loggedRouter := handlers.LoggingHandler(os.Stdout, router)
+	log.Println("[INFO] Started Distributed KV Store server.")
+	log.Fatal(http.ListenAndServe(":8080", loggedRouter))
 }
