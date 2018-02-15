@@ -16,4 +16,27 @@
 
 package api
 
-// TODO(sshank)
+import (
+	"github.com/stretchr/testify/assert"
+	"os"
+	"testing"
+)
+
+func TestInitialise_errorIP(t *testing.T) {
+	consul_ip := os.Getenv("CONSUL_IP")
+	os.Unsetenv("CONSUL_IP")
+	defer os.Setenv("CONSUL_IP", consul_ip)
+
+	err := Initialise()
+	assert.NotNil(t, err)
+}
+
+func TestInitialise_errorConsul(t *testing.T) {
+	// This is done this way cause the Consul interface with Fake Struct will get
+	// overridden with real Struct during runtime.
+	os.Setenv("CONSUL_IP", "test")
+	defer os.Unsetenv("CONSUL_IP")
+
+	err := Initialise()
+	assert.NotNil(t, err)
+}

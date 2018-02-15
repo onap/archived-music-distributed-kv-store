@@ -67,6 +67,25 @@ paths:
           description: "successful operation"
           schema:
             $ref: "#/definitions/Get"
+  /deleteconfig/{key}:
+    delete:
+      tags:
+      - "delete single key"
+      summary: "Delete value for specific key present in Consul."
+      description: "Deletes a specific key."
+      produces:
+      - "application/json"
+      parameters:
+      - name: "key"
+        in: "path"
+        description: "Key used to delete"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Delete"
 definitions:
   LoadRequest:
     type: "object"
@@ -90,6 +109,11 @@ definitions:
         items:
           type: "string"
   Get:
+    type: "object"
+    properties:
+      response:
+        type: "string"
+  Delete:
     type: "object"
     properties:
       response:
