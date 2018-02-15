@@ -18,15 +18,44 @@ package api
 
 import (
 	"encoding/json"
+	"errors"
 	"github.com/gorilla/mux"
 	"net/http"
 )
 
-var getkvs = GetKVsFromConsul
+type ResponseStringStruct struct {
+	Response string `json:"response"`
+}
+
+type ResponseGETStruct struct {
+	Response map[string]string `json:"response"`
+}
+
+type ResponseGETSStruct struct {
+	Response []string `json:"response"`
+}
+
+type POSTBodyStruct struct {
+	Type *TypeStruct `json:"type"`
+}
+
+type TypeStruct struct {
+	FilePath string `json:"file_path"`
+}
+
+func ValidateBody(body POSTBodyStruct) error {
+	if body.Type == nil {
+		return errors.New("Type not set. Recheck POST data.")
+	} else if body.Type.FilePath == "" {
+		return errors.New("file_path not set")
+	} else {
+		return nil
+	}
+}
 
 func HandlePOST(w http.ResponseWriter, r *http.Request) {
 
-	var body LoadStruct
+	var body POSTBodyStruct
 
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&body)
@@ -49,7 +78,7 @@ func HandlePOST(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = KVStruct.ReadConfigs(body)
+	err = KeyValues.ReadConfigs(body)
 
 	if err != nil {
 		req := ResponseStringStruct{Response: string(err.Error())}
@@ -59,7 +88,7 @@ func HandlePOST(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = KVStruct.WriteKVsToConsul()
+	err = KeyValues.WriteKVsToConsul()
 
 	if err != nil {
 		req := ResponseStringStruct{Response: string(err.Error())}
@@ -77,7 +106,7 @@ func HandleGET(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	key := vars["key"]
 
-	value, err := GetKVFromConsul(key)
+	value, err := Consul.RequestGET(key)
 
 	if err != nil {
 		req := ResponseStringStruct{Response: string(err.Error())}
@@ -93,7 +122,7 @@ func HandleGET(w http.ResponseWriter, r *http.Request) {
 
 func HandleGETS(w http.ResponseWriter, r *http.Request) {
 
-	values, err := getkvs()
+	values, err := Consul.RequestGETS()
 
 	if err != nil {
 		req := ResponseStringStruct{Response: string(err.Error())}

@@ -16,4 +16,14 @@
 
 package api
 
-// TODO(sshank)
+import (
+	"github.com/stretchr/testify/assert"
+	"os"
+	"testing"
+)
+
+func TestInitialise(t *testing.T) {
+	os.Unsetenv("CONSUL_IP")
+	err := Initialise()
+	assert.NotNil(t, err)
+}
