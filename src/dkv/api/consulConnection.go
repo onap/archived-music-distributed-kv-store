@@ -17,69 +17,76 @@
 package api
 
 import (
-	"errors"
-	"fmt"
-	"github.com/hashicorp/consul/api"
+	consulapi "github.com/hashicorp/consul/api"
 	"os"
 )
 
-func (kvStruct *KeyValue) WriteKVsToConsul() error {
-	for key, value := range kvStruct.kv {
-		if os.Getenv("CONSUL_IP") == "" {
-			return errors.New("CONSUL_IP environment variable not set.")
-		}
-		err := requestPUT(os.Getenv("CONSUL_IP"), key, value)
-		if err != nil {
-			return err
-		}
-		fmt.Println("key:", key, "value", value)
+// Interface to have all signature methods.
+type ConsulRequester interface {
+	InitializeConsulClient() error
+	CheckConsulHealth() error
+	RequestPUT(string, string) error
+	RequestGET(string) (string, error)
+	RequestGETS() ([]string, error)
+	RequestDELETE(string) error
+}
+
+type ConsulStruct struct {
+	consulClient *consulapi.Client
+}
+
+/*
+This var is an interface used to initialize ConsulStruct when the who API is brought up. This is done this way so
+that a fake Consul can be created which satisfies the interface and we can use that fake Consul in unit testing.
+*/
+var Consul ConsulRequester
+
+/*
+The following functions seems like they are not used. But since they are following the ConsulRequest interface,
+they can be visible to any Struct which is initiated using the ConsulRequest. This is done for this project in
+the initialise.go file where we are creating a ConsulStruct and assigning it to Consul var which is declared
+above.
+*/
+func (c *ConsulStruct) InitializeConsulClient() error {
+	config := consulapi.DefaultConfig()
+	config.Address = os.Getenv("CONSUL_IP") + ":8500"
+
+	client, err := consulapi.NewClient(config)
+	if err != nil {
+		return err
 	}
-	fmt.Println("Wrote KVs to Consul")
+	c.consulClient = client
+
 	return nil
 }
 
-func GetKVFromConsul(key string) (string, error) {
-	if os.Getenv("CONSUL_IP") == "" {
-		return "", errors.New("CONSUL_IP environment variable not set.")
+func (c *ConsulStruct) CheckConsulHealth() error {
+	kv := c.consulClient.KV()
+	_, _, err := kv.Get("test", nil)
+	if err != nil {
+		return err
 	}
-	resp, err := requestGET(os.Getenv("CONSUL_IP"), key)
-	return resp, err
+	return nil
 }
 
-func GetKVsFromConsul() ([]string, error) {
-	if os.Getenv("CONSUL_IP") == "" {
-		return []string{""}, errors.New("CONSUL_IP environment variable not set.")
-	}
-	resp, err := requestGETS(os.Getenv("CONSUL_IP"))
-	return resp, err
-}
+func (c *ConsulStruct) RequestPUT(key string, value string) error {
 
-func requestPUT(url string, key string, value string) error {
-	config := api.DefaultConfig()
-	config.Address = url + ":8500"
-	client, err := api.NewClient(config)
+	kv := c.consulClient.KV()
+
+	p := &consulapi.KVPair{Key: key, Value: []byte(value)}
+
+	_, err := kv.Put(p, nil)
 
 	if err != nil {
 		return err
 	}
 
-	kv := client.KV()
-
-	p := &api.KVPair{Key: key, Value: []byte(value)}
-	_, err = kv.Put(p, nil)
-	if err != nil {
-		return err
-	}
-
 	return nil
 }
 
-func requestGET(url string, key string) (string, error) {
-	config := api.DefaultConfig()
-	config.Address = url + ":8500"
-	client, err := api.NewClient(config)
+func (c *ConsulStruct) RequestGET(key string) (string, error) {
 
-	kv := client.KV()
+	kv := c.consulClient.KV()
 
 	pair, _, err := kv.Get(key, nil)
 
@@ -90,12 +97,9 @@ func requestGET(url string, key string) (string, error) {
 
 }
 
-func requestGETS(url string) ([]string, error) {
-	config := api.DefaultConfig()
-	config.Address = url + ":8500"
-	client, err := api.NewClient(config)
+func (c *ConsulStruct) RequestGETS() ([]string, error) {
 
-	kv := client.KV()
+	kv := c.consulClient.KV()
 
 	pairs, _, err := kv.List("", nil)
 
@@ -110,4 +114,18 @@ func requestGETS(url string) ([]string, error) {
 	}
 
 	return res, err
+}
+
+func (c *ConsulStruct) RequestDELETE(key string) error {
+	kv := c.consulClient.KV()
+
+	val, err := kv.Delete(key, nil)
+
+	print("#####: ", val)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
