@@ -28,8 +28,8 @@
 [[projects]]
   name = "github.com/hashicorp/consul"
   packages = ["api"]
-  revision = "48f3dd5642374d079f5a64359023fb8318eb81cc"
-  version = "v1.0.3"
+  revision = "9a494b5fb9c86180a5702e29c485df1507a47198"
+  version = "v1.0.6"
 
 [[projects]]
   branch = "master"
@@ -52,8 +52,8 @@
 [[projects]]
   name = "github.com/magiconair/properties"
   packages = ["."]
-  revision = "d419a98cdbed11a922bf76f257b7c4be79b50e73"
-  version = "v1.7.4"
+  revision = "c3beff4c2358b44d0493c7dda585e7db7ff28ae6"
+  version = "v1.7.6"
 
 [[projects]]
   branch = "master"
@@ -76,6 +76,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "da4b4bdf45858b18ffddcdd32894f4af272104c2501a5334bf1d01abfa6d9a23"
+  inputs-digest = "000a855a3e5fca6c1f7b134951013777f7decbbde7be20af1e262da6005e874a"
   solver-name = "gps-cdcl"
   solver-version = 1

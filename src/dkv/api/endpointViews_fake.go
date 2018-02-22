@@ -78,7 +78,7 @@ func (f *FakeKeyValues) ReadConfigs(body POSTBodyStruct) error {
 	return nil
 }
 
-func (f *FakeKeyValues) WriteKVsToConsul() error {
+func (f *FakeKeyValues) WriteKVsToConsul(prefix string) error {
 	return nil
 }
 
@@ -91,6 +91,6 @@ func (f *FakeKeyValuesErr) ReadConfigs(body POSTBodyStruct) error {
 	return errors.New("Internal Server Error")
 }
 
-func (f *FakeKeyValuesErr) WriteKVsToConsul() error {
+func (f *FakeKeyValuesErr) WriteKVsToConsul(prefix string) error {
 	return errors.New("Internal Server Error")
 }

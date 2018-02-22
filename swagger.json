@@ -90,6 +90,8 @@ definitions:
   LoadRequest:
     type: "object"
     properties:
+      domain:
+        type: "string"
       type:
         $ref: "#/definitions/Type"
   Type:

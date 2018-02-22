@@ -27,7 +27,7 @@ import (
 )
 
 type KeyValuesInterface interface {
-	WriteKVsToConsul() error
+	WriteKVsToConsul(string) error
 	ReadConfigs(POSTBodyStruct) error
 	PropertiesFilesToKV(string) error
 	ReadMultipleProperties(string) error
@@ -41,8 +41,9 @@ type KeyValuesStruct struct {
 
 var KeyValues KeyValuesInterface
 
-func (kvStruct *KeyValuesStruct) WriteKVsToConsul() error {
+func (kvStruct *KeyValuesStruct) WriteKVsToConsul(prefix string) error {
 	for key, value := range kvStruct.kvs {
+		key = prefix + "." + key
 		err := Consul.RequestPUT(key, value)
 		if err != nil {
 			return err

@@ -96,6 +96,7 @@ func TestHandlePOST(t *testing.T) {
 	}()
 
 	body := &POSTBodyStruct{
+		Domain: "test",
 		Type: &TypeStruct{
 			FilePath: "default",
 		},
@@ -173,6 +174,7 @@ func TestHandlePOST_ConsulError(t *testing.T) {
 	}()
 
 	body := &POSTBodyStruct{
+		Domain: "test",
 		Type: &TypeStruct{
 			FilePath: "default",
 		},

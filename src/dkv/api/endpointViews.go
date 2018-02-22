@@ -36,7 +36,8 @@ type ResponseGETSStruct struct {
 }
 
 type POSTBodyStruct struct {
-	Type *TypeStruct `json:"type"`
+	Domain string      `json:"domain"`
+	Type   *TypeStruct `json:"type"`
 }
 
 type TypeStruct struct {
@@ -44,6 +45,9 @@ type TypeStruct struct {
 }
 
 func ValidateBody(body POSTBodyStruct) error {
+	if body.Domain == "" {
+		return errors.New("Domain not set. Please set domain in POST.")
+	}
 	if body.Type == nil {
 		return errors.New("Type not set. Recheck POST data.")
 	} else if body.Type.FilePath == "" {
@@ -88,7 +92,7 @@ func HandlePOST(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = KeyValues.WriteKVsToConsul()
+	err = KeyValues.WriteKVsToConsul(body.Domain)
 
 	if err != nil {
 		req := ResponseStringStruct{Response: string(err.Error())}
