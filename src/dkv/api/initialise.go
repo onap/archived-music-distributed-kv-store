@@ -16,6 +16,8 @@
 
 package api
 
+import "os"
+
 func Initialise() error {
 	Consul = &ConsulStruct{}
 	KeyValues = &KeyValuesStruct{kvs: make(map[string]string)}
@@ -29,6 +31,12 @@ func Initialise() error {
 	err = Consul.CheckConsulHealth()
 	if err != nil {
 		return err
+	}
+
+	if os.Getenv("MOUNTPATH") != "" {
+		MOUNTPATH = os.Getenv("MOUNTPATH")
+	} else {
+		MOUNTPATH = "../../mountpath/"
 	}
 
 	return nil
