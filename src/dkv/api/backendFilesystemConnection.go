@@ -44,9 +44,10 @@ type DirectoryStruct struct {
 }
 
 const (
-	MOUNTPATH = "../../mountpath/"
-	JSONPATH  = "api/token_service_map.json"
+	JSONPATH = "api/token_service_map.json"
 )
+
+var MOUNTPATH = ""
 
 var Directory DirectoryOperationer
 
