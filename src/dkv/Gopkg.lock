@@ -44,6 +44,12 @@
   revision = "6bb64b370b90e7ef1fa532be9e591a81c3493e00"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/hashicorp/go-uuid"
+  packages = ["."]
+  revision = "27454136f0364f2d44b1276c552d69105cf8c498"
+
+[[projects]]
   name = "github.com/hashicorp/serf"
   packages = ["coordinate"]
   revision = "d6574a5bb1226678d7010325fb6c985db20ee458"
@@ -76,6 +82,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "000a855a3e5fca6c1f7b134951013777f7decbbde7be20af1e262da6005e874a"
+  inputs-digest = "ec895bb8f93ec798d68a3d83b9004eff00dc4078f5a2bccf75390bcb8fccbd72"
   solver-name = "gps-cdcl"
   solver-version = 1

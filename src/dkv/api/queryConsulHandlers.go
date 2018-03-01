@@ -18,7 +18,6 @@ package api
 
 import (
 	"encoding/json"
-	"errors"
 	"github.com/gorilla/mux"
 	"net/http"
 )
@@ -35,80 +34,9 @@ type ResponseGETSStruct struct {
 	Response []string `json:"response"`
 }
 
-type POSTBodyStruct struct {
-	Domain string      `json:"domain"`
-	Type   *TypeStruct `json:"type"`
-}
-
-type TypeStruct struct {
-	FilePath string `json:"file_path"`
-}
-
-func ValidateBody(body POSTBodyStruct) error {
-	if body.Domain == "" {
-		return errors.New("Domain not set. Please set domain in POST.")
-	}
-	if body.Type == nil {
-		return errors.New("Type not set. Recheck POST data.")
-	} else if body.Type.FilePath == "" {
-		return errors.New("file_path not set")
-	} else {
-		return nil
-	}
-}
-
-func HandlePOST(w http.ResponseWriter, r *http.Request) {
-
-	var body POSTBodyStruct
-
-	decoder := json.NewDecoder(r.Body)
-	err := decoder.Decode(&body)
-
-	if err != nil {
-		req := ResponseStringStruct{Response: "Empty body."}
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(&req)
-		return
-	}
-
-	err = ValidateBody(body)
-
-	if err != nil {
-		req := ResponseStringStruct{Response: string(err.Error())}
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(req)
-		return
-	}
-
-	err = KeyValues.ReadConfigs(body)
-
-	if err != nil {
-		req := ResponseStringStruct{Response: string(err.Error())}
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(req)
-		return
-	}
-
-	err = KeyValues.WriteKVsToConsul(body.Domain)
-
-	if err != nil {
-		req := ResponseStringStruct{Response: string(err.Error())}
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(req)
-	} else {
-		req := ResponseStringStruct{Response: "Configuration read and default Key Values loaded to Consul"}
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(&req)
-	}
-}
-
 func HandleGET(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	key := vars["key"]
+	key := vars["token"] + "/" + vars["key"]
 
 	value, err := Consul.RequestGET(key)
 

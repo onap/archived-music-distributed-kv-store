@@ -49,6 +49,9 @@ the initialise.go file where we are creating a ConsulStruct and assigning it to 
 above.
 */
 func (c *ConsulStruct) InitializeConsulClient() error {
+	if os.Getenv("CONSUL_IP") == "" {
+		return errors.New("CONSUL_IP environment variable not set.")
+	}
 	config := consulapi.DefaultConfig()
 	config.Address = os.Getenv("CONSUL_IP") + ":8500"
 
