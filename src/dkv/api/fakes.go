@@ -74,7 +74,7 @@ type FakeKeyValues struct {
 	KeyValuesStruct
 }
 
-func (f *FakeKeyValues) ReadConfigs(body POSTBodyStruct) error {
+func (f *FakeKeyValues) ReadConfigs(body LoadConfigBody) error {
 	return nil
 }
 
@@ -87,7 +87,7 @@ type FakeKeyValuesErr struct {
 	KeyValuesStruct
 }
 
-func (f *FakeKeyValuesErr) ReadConfigs(body POSTBodyStruct) error {
+func (f *FakeKeyValuesErr) ReadConfigs(body LoadConfigBody) error {
 	return errors.New("Internal Server Error")
 }
 

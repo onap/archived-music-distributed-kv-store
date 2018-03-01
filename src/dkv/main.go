@@ -31,10 +31,24 @@ func main() {
 		log.Fatal(err)
 	}
 	router := mux.NewRouter()
-	router.HandleFunc("/loadconfigs", api.HandlePOST).Methods("POST")
-	router.HandleFunc("/getconfig/{key}", api.HandleGET).Methods("GET")
-	router.HandleFunc("/deleteconfig/{key}", api.HandleDELETE).Methods("DELETE")
-	router.HandleFunc("/getconfigs", api.HandleGETS).Methods("GET")
+	// Sevice Registration
+	// Domain CRUD
+	router.HandleFunc("/v1/register", api.HandleServiceCreate).Methods("POST")
+	router.HandleFunc("/v1/register/{token}", api.HandleServiceGet).Methods("GET")
+	router.HandleFunc("/v1/register/{token}", api.HandleServiceDelete).Methods("DELETE")
+	// Subdomain CRUD
+	router.HandleFunc("/v1/register/{token}/subdomain", api.HandleServiceSubdomainCreate).Methods("POST")
+	router.HandleFunc("/v1/register/{token}/subdomain", api.HandleServiceSubdomainGet).Methods("GET")
+	router.HandleFunc("/v1/register/{token}/subdomain/{subdomain}", api.HandleServiceSubdomainDelete).Methods("DELETE")
+	// Configuration CRUD
+	router.HandleFunc("/v1/config", api.HandleConfigUpload).Methods("POST")
+	router.HandleFunc("/v1/config", api.HandleConfigGet).Methods("GET")
+	router.HandleFunc("/v1/config", api.HandleConfigDelete).Methods("DELETE")
+	router.HandleFunc("/v1/loadconfig", api.HandleConfigLoad).Methods("POST")
+	// Direct Consul queries.
+	router.HandleFunc("/v1/getconfig/{key}", api.HandleGET).Methods("GET")
+	router.HandleFunc("/v1/deleteconfig/{key}", api.HandleDELETE).Methods("DELETE")
+	router.HandleFunc("/v1/getconfigs", api.HandleGETS).Methods("GET")
 	loggedRouter := handlers.LoggingHandler(os.Stdout, router)
 	log.Println("[INFO] Started Distributed KV Store server.")
 	log.Fatal(http.ListenAndServe(":8080", loggedRouter))

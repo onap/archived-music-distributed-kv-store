@@ -28,7 +28,7 @@ import (
 
 type KeyValuesInterface interface {
 	WriteKVsToConsul(string) error
-	ReadConfigs(POSTBodyStruct) error
+	ReadConfigs(LoadConfigBody) error
 	PropertiesFilesToKV(string) error
 	ReadMultipleProperties(string) error
 	ReadProperty(string)
@@ -54,7 +54,7 @@ func (kvStruct *KeyValuesStruct) WriteKVsToConsul(prefix string) error {
 	return nil
 }
 
-func (kvStruct *KeyValuesStruct) ReadConfigs(body POSTBodyStruct) error {
+func (kvStruct *KeyValuesStruct) ReadConfigs(body LoadConfigBody) error {
 	defer kvStruct.Unlock()
 
 	kvStruct.Lock()
