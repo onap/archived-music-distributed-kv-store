@@ -23,43 +23,23 @@ import (
 	"net/http"
 )
 
-type ResponseStringStruct struct {
-	Response string `json:"response"`
+type CreateRegisterServiceBody struct {
+	Domain string `json:"domain"`
 }
 
-type ResponseGETStruct struct {
-	Response map[string]string `json:"response"`
+type CreateServiceSubdomainBody struct {
+	Subdomain string `json:"subdomain"`
 }
 
-type ResponseGETSStruct struct {
-	Response []string `json:"response"`
-}
-
-type POSTBodyStruct struct {
-	Domain string      `json:"domain"`
-	Type   *TypeStruct `json:"type"`
-}
-
-type TypeStruct struct {
-	FilePath string `json:"file_path"`
-}
-
-func ValidateBody(body POSTBodyStruct) error {
+func ValidateCreateRegisterServiceBody(body CreateRegisterServiceBody) error {
 	if body.Domain == "" {
 		return errors.New("Domain not set. Please set domain in POST.")
 	}
-	if body.Type == nil {
-		return errors.New("Type not set. Recheck POST data.")
-	} else if body.Type.FilePath == "" {
-		return errors.New("file_path not set")
-	} else {
-		return nil
-	}
+	return nil
 }
 
-func HandlePOST(w http.ResponseWriter, r *http.Request) {
-
-	var body POSTBodyStruct
+func HandleServiceCreate(w http.ResponseWriter, r *http.Request) {
+	var body CreateRegisterServiceBody
 
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&body)
@@ -72,7 +52,7 @@ func HandlePOST(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = ValidateBody(body)
+	err = ValidateCreateRegisterServiceBody(body)
 
 	if err != nil {
 		req := ResponseStringStruct{Response: string(err.Error())}
@@ -82,17 +62,100 @@ func HandlePOST(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = KeyValues.ReadConfigs(body)
+	token, err := DirectoryOperation.CreateService(body)
 
 	if err != nil {
 		req := ResponseStringStruct{Response: string(err.Error())}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(req)
+	} else {
+		req := ResponseStringStruct{Response: "Registration Successful. Token: " + token}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(&req)
+	}
+}
+
+func HandleServiceGet(w http.ResponseWriter, r *http.Request) {
+	// TODO
+}
+
+func HandleServiceDelete(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	token := vars["token"]
+
+	err := DirectoryOperation.RemoveService(token)
+
+	if err != nil {
+		req := ResponseStringStruct{Response: string(err.Error())}
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(req)
+	} else {
+		req := ResponseStringStruct{Response: "Deletion of service is successful."}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(&req)
+	}
+}
+
+func HandleServiceSubdomainCreate(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	token := vars["token"]
+
+	var body CreateServiceSubdomainBody
+
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&body)
+
+	if err != nil {
+		req := ResponseStringStruct{Response: "Empty body."}
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(&req)
+		return
+	}
+
+	if body.Subdomain == "" {
+		req := ResponseStringStruct{Response: "Subdomain not found in POST."}
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(&req)
+		return
+	}
+
+	err = DirectoryOperation.CreateServiceSubdomain(token, body.Subdomain)
+
+	if err != nil {
+		req := ResponseStringStruct{Response: string(err.Error())}
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(req)
+	} else {
+		req := ResponseStringStruct{Response: "Subdomain creation success with token: " + token}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(&req)
+	}
+
+}
+
+func HandleServiceSubdomainGet(w http.ResponseWriter, r *http.Request) {
+	// TODO
+}
+
+func HandleServiceSubdomainDelete(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	token := vars["token"]
+	subdomain := vars["subdomain"]
+
+	if token == "" {
+		req := ResponseStringStruct{Response: "Token not passed."}
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(req)
 		return
 	}
 
-	err = KeyValues.WriteKVsToConsul(body.Domain)
+	err := DirectoryOperation.RemoveServiceSubdomain(token, subdomain)
 
 	if err != nil {
 		req := ResponseStringStruct{Response: string(err.Error())}
@@ -100,60 +163,9 @@ func HandlePOST(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(req)
 	} else {
-		req := ResponseStringStruct{Response: "Configuration read and default Key Values loaded to Consul"}
+		req := ResponseStringStruct{Response: "Deletion of service is successful."}
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(&req)
 	}
-}
 
-func HandleGET(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	key := vars["key"]
-
-	value, err := Consul.RequestGET(key)
-
-	if err != nil {
-		req := ResponseStringStruct{Response: string(err.Error())}
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(req)
-	} else {
-		req := ResponseGETStruct{Response: map[string]string{key: value}}
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(req)
-	}
-}
-
-func HandleGETS(w http.ResponseWriter, r *http.Request) {
-
-	values, err := Consul.RequestGETS()
-
-	if err != nil {
-		req := ResponseStringStruct{Response: string(err.Error())}
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(req)
-	} else {
-		req := ResponseGETSStruct{Response: values}
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(req)
-	}
-}
-
-func HandleDELETE(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	key := vars["key"]
-
-	err := Consul.RequestDELETE(key)
-
-	if err != nil {
-		req := ResponseStringStruct{Response: string(err.Error())}
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(req)
-	} else {
-		req := ResponseStringStruct{Response: "Key deletion successful."}
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(&req)
-	}
 }

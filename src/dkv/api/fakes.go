@@ -74,11 +74,11 @@ type FakeKeyValues struct {
 	KeyValuesStruct
 }
 
-func (f *FakeKeyValues) ReadConfigs(body POSTBodyStruct) error {
+func (f *FakeKeyValues) ConfigReader(token string, subdomain string, filename string) error {
 	return nil
 }
 
-func (f *FakeKeyValues) WriteKVsToConsul(prefix string) error {
+func (f *FakeKeyValues) WriteKVsToConsul(token string, subdomain string) error {
 	return nil
 }
 
@@ -87,10 +87,10 @@ type FakeKeyValuesErr struct {
 	KeyValuesStruct
 }
 
-func (f *FakeKeyValuesErr) ReadConfigs(body POSTBodyStruct) error {
+func (f *FakeKeyValuesErr) ConfigReader(token string, subdomain string, filename string) error {
 	return errors.New("Internal Server Error")
 }
 
-func (f *FakeKeyValuesErr) WriteKVsToConsul(prefix string) error {
+func (f *FakeKeyValuesErr) WriteKVsToConsul(token string, subdomain string) error {
 	return errors.New("Internal Server Error")
 }

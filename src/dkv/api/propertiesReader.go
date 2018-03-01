@@ -17,19 +17,20 @@
 package api
 
 import (
-	"errors"
+	// "errors"
 	"github.com/magiconair/properties"
 	"io/ioutil"
 	"log"
-	"path"
-	"runtime"
+	// "path"
+	// "runtime"
+	"os"
 	"sync"
 )
 
 type KeyValuesInterface interface {
-	WriteKVsToConsul(string) error
-	ReadConfigs(POSTBodyStruct) error
-	PropertiesFilesToKV(string) error
+	WriteKVsToConsul(string, string) error
+	ConfigReader(string, string, string) error
+	ReadMultiplePropertiesRecursive(string) error
 	ReadMultipleProperties(string) error
 	ReadProperty(string)
 }
@@ -41,9 +42,15 @@ type KeyValuesStruct struct {
 
 var KeyValues KeyValuesInterface
 
-func (kvStruct *KeyValuesStruct) WriteKVsToConsul(prefix string) error {
+func (kvStruct *KeyValuesStruct) WriteKVsToConsul(token string, subdomain string) error {
+	var prefix = ""
+	if subdomain != "" {
+		prefix += token + "/" + subdomain
+	} else {
+		prefix += token + "/"
+	}
 	for key, value := range kvStruct.kvs {
-		key = prefix + "." + key
+		key = prefix + key
 		err := Consul.RequestPUT(key, value)
 		if err != nil {
 			return err
@@ -54,43 +61,55 @@ func (kvStruct *KeyValuesStruct) WriteKVsToConsul(prefix string) error {
 	return nil
 }
 
-func (kvStruct *KeyValuesStruct) ReadConfigs(body POSTBodyStruct) error {
+func (kvStruct *KeyValuesStruct) ConfigReader(token string, subdomain string, filename string) error {
 	defer kvStruct.Unlock()
 
 	kvStruct.Lock()
+	var filepath = MOUNTPATH
 
-	err := kvStruct.PropertiesFilesToKV(body.Type.FilePath)
-	if err != nil {
-		return err
+	if filename != "" && subdomain != "" {
+		// Specific file in specific domain.
+		filepath += token + "/" + subdomain + "/" + filename
+		kvStruct.ReadProperty(filepath)
+		return nil
 	}
+
+	if filename != "" && subdomain == "" {
+		// Specific file in Token
+		println(filepath)
+		filepath += token + "/" + filename
+		kvStruct.ReadProperty(filepath)
+		return nil
+	}
+
+	if filename == "" && subdomain != "" {
+		// All files in specific domain
+		filepath += token + "/" + subdomain
+		kvStruct.ReadMultipleProperties(filepath)
+		return nil
+	}
+
+	filepath += token
+	kvStruct.ReadMultiplePropertiesRecursive(filepath)
 	return nil
 }
 
-func (kvStruct *KeyValuesStruct) PropertiesFilesToKV(directory string) error {
-
-	if directory == "default" {
-		_, filename, _, ok := runtime.Caller(0)
-		if !ok {
-			return errors.New("No caller")
-		}
-
-		defaultDir := path.Dir(filename) + "/../configurations/"
-		err := kvStruct.ReadMultipleProperties(defaultDir)
-		if err != nil {
-			return err
-		}
-
-		return nil
-
-	} else {
-		directory += "/"
-		err := kvStruct.ReadMultipleProperties(directory)
-		if err != nil {
-			return err
-		}
-
-		return nil
+func (kvStruct *KeyValuesStruct) ReadMultiplePropertiesRecursive(path string) error {
+	// Go inside each sub directory and run ReadMultipleProperties inside.
+	files, err := ioutil.ReadDir(path)
+	if err != nil {
+		return err
 	}
+
+	for _, f := range files {
+		fi, _ := os.Stat(path + "/" + f.Name())
+		if fi.Mode().IsDir() {
+			kvStruct.ReadMultipleProperties(path + "/" + f.Name())
+		} else {
+			kvStruct.ReadProperty(path + "/" + f.Name())
+		}
+	}
+	return nil
 }
 
 func (kvStruct *KeyValuesStruct) ReadMultipleProperties(path string) error {
