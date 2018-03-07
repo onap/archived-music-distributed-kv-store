@@ -91,7 +91,7 @@ func HandleServiceGet(w http.ResponseWriter, r *http.Request) {
 		if found == true {
 			GenerateResponse(w, r, http.StatusOK, service)
 		} else {
-			GenerateResponse(w, r, http.StatusNotFound, "Service for Token:"+token+"not found.")
+			GenerateResponse(w, r, http.StatusNotFound, "Service for Token: "+token+" not found.")
 		}
 
 	}
