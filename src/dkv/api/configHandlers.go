@@ -81,6 +81,8 @@ func HandleConfigUpload(w http.ResponseWriter, r *http.Request) {
 	}
 	defer f.Close()
 	io.Copy(f, file)
+
+	GenerateResponse(w, r, http.StatusOK, "Configuration uploaded to Token: "+token)
 }
 
 func HandleConfigLoad(w http.ResponseWriter, r *http.Request) {
@@ -102,14 +104,14 @@ func HandleConfigLoad(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = KeyValues.ConfigReader(body.Token, body.Subdomain, body.Filename)
+	kvs_map, err := KeyValues.ConfigReader(body.Token, body.Subdomain, body.Filename)
 
 	if err != nil {
 		GenerateResponse(w, r, http.StatusInternalServerError, string(err.Error()))
 		return
 	}
 
-	err = KeyValues.WriteKVsToConsul(body.Token, body.Subdomain)
+	err = KeyValues.WriteKVsToConsul(body.Token, body.Subdomain, kvs_map)
 
 	if err != nil {
 		GenerateResponse(w, r, http.StatusInternalServerError, string(err.Error()))
@@ -119,12 +121,12 @@ func HandleConfigLoad(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandleDefaultConfigLoad(w http.ResponseWriter, r *http.Request) {
-	err := KeyValues.ConfigReader("default", "", "")
+	kvs_map, err := KeyValues.ConfigReader("default", "", "")
 	if err != nil {
 		GenerateResponse(w, r, http.StatusInternalServerError, string(err.Error()))
 		return
 	}
-	err = KeyValues.WriteKVsToConsul("default", "")
+	err = KeyValues.WriteKVsToConsul("default", "", kvs_map)
 	if err != nil {
 		GenerateResponse(w, r, http.StatusInternalServerError, string(err.Error()))
 	} else {

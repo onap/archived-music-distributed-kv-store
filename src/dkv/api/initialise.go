@@ -20,7 +20,7 @@ import "os"
 
 func Initialise() error {
 	Consul = &ConsulStruct{}
-	KeyValues = &KeyValuesStruct{kvs: make(map[string]string)}
+	KeyValues = &KeyValuesStruct{}
 	Directory = &DirectoryStruct{directory: ""}
 
 	err := Consul.InitializeConsulClient()
