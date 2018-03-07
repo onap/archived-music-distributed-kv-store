@@ -8,8 +8,6 @@ function start_consul_server {
     # Running consul in server mode since we are doing a single node. If we need to add more,
     # We need to run multiple consul agents in client mode without providing the -server arguements.
 
-    # CHANGE THIS TO SERVER MODE!
-    # consul agent -dev > /dev/null 2>&1 &
     consul agent -bootstrap -server -bind=127.0.0.1 -data-dir=/dkv/consul &
 }
 
@@ -28,6 +26,8 @@ function set_paths {
 }
 
 set_paths
-start_consul_server
-sleep 5
+if [ "$CONSUL_IP" = "localhost" ]; then
+    start_consul_server
+    sleep 5
+fi
 start_api_server

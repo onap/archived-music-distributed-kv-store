@@ -81,6 +81,8 @@ func HandleConfigUpload(w http.ResponseWriter, r *http.Request) {
 	}
 	defer f.Close()
 	io.Copy(f, file)
+
+	GenerateResponse(w, r, http.StatusOK, "Configuration uploaded to Token: "+token)
 }
 
 func HandleConfigLoad(w http.ResponseWriter, r *http.Request) {
