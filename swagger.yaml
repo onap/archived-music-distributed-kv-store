@@ -161,7 +161,7 @@ paths:
       summary: "Get config file."
       description: "Get config file identified by token and filename."
       produces:
-      - "application/json"
+      - "file"
       parameters:
       - name: "token"
         in: "path"
@@ -176,8 +176,6 @@ paths:
       responses:
         200:
           description: "successful operation"
-          schema:
-            $ref: "#/definitions/ConfigDomainDOWNLOADResponse"
     delete:
         tags:
         - "Config"
@@ -208,7 +206,7 @@ paths:
       summary: "Get config file from subdomain."
       description: "Get config file identified by token, filename and subdomain."
       produces:
-      - "application/json"
+      - "file"
       parameters:
       - name: "token"
         in: "path"
@@ -228,8 +226,6 @@ paths:
       responses:
         200:
           description: "successful operation"
-          schema:
-            $ref: "#/definitions/ConfigSubDomainDOWNLOADResponse"
     delete:
         tags:
         - "Config"
@@ -385,17 +381,7 @@ definitions:
     properties:
       response:
         type: "string"
-  ConfigDomainDOWNLOADResponse:
-    type: "object"
-    properties:
-      response:
-        type: "string"
   ConfigDomainDELETEResponse:
-    type: "object"
-    properties:
-      response:
-        type: "string"
-  ConfigSubDomainDOWNLOADResponse:
     type: "object"
     properties:
       response:
