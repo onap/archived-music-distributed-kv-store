@@ -1,31 +1,14 @@
 #!/bin/bash
 
-function verify_consul_run {
-    consul --version
-}
-
 function start_consul_server {
-    # Running consul in server mode since we are doing a single node. If we need to add more,
-    # We need to run multiple consul agents in client mode without providing the -server arguements.
-
-    consul agent -bootstrap -server -bind=127.0.0.1 -data-dir=/dkv/consul &
+    consul agent -bootstrap -server -bind=127.0.0.1 -data-dir=/dkv_mount_path/consul_data &
 }
 
 function start_api_server {
-    # Uncomment the following after the mountpath is setup in the code base and the docker file.
-    # Until then, go run is used.
-    #cd target
-    #./dkv
-    cd src/dkv/
-    go run main.go
+    pushd /dkv_mount_path/
+    ./dkv
 }
 
-function set_paths {
-    export GOPATH=$PWD
-    source /etc/environment
-}
-
-set_paths
 if [ "$CONSUL_IP" = "localhost" ]; then
     start_consul_server
     sleep 5

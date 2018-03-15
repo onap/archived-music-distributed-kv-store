@@ -8,7 +8,7 @@ all: test build
 deploy: test build
 
 build: deps format
-	go build -o $(GOPATH)/target/$(BINARY) -v main.go
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w' -o $(GOPATH)/target/$(BINARY) -v main.go
 
 clean:
 	go clean
