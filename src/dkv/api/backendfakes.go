@@ -31,6 +31,14 @@ type FakeConsul struct {
 	ConsulStruct
 }
 
+func (f *FakeConsul) InitializeDatastoreClient() error {
+	return nil
+}
+
+func (f *FakeConsul) CheckDatastoreHealth() error {
+	return nil
+}
+
 func (f *FakeConsul) RequestGETS() ([]string, error) {
 	return []string{"key1", "key2"}, nil
 }
@@ -50,6 +58,14 @@ func (f *FakeConsul) RequestDELETE(key string) error {
 // Error
 type FakeConsulErr struct {
 	ConsulStruct
+}
+
+func (f *FakeConsulErr) InitializeDatastoreClient() error {
+	return errors.New("Internal Server Error")
+}
+
+func (f *FakeConsulErr) CheckDatastoreHealth() error {
+	return errors.New("Internal Server Error")
 }
 
 func (f *FakeConsulErr) RequestGETS() ([]string, error) {

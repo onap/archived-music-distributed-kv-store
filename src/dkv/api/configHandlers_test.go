@@ -75,14 +75,14 @@ func TestHandleConfigDelete_err(t *testing.T) {
 }
 
 func TestHandleConfigPOST(t *testing.T) {
-	oldConsul := Consul
+	oldDatastore := Datastore
 	oldKeyValues := KeyValues
 
-	Consul = &FakeConsul{}
+	Datastore = &FakeConsul{}
 	KeyValues = &FakeKeyValues{}
 
 	defer func() {
-		Consul = oldConsul
+		Datastore = oldDatastore
 		KeyValues = oldKeyValues
 	}()
 
@@ -104,14 +104,14 @@ func TestHandleConfigPOST(t *testing.T) {
 }
 
 func TestHandleConfigPOST_only_token(t *testing.T) {
-	oldConsul := Consul
+	oldDatastore := Datastore
 	oldKeyValues := KeyValues
 
-	Consul = &FakeConsul{}
+	Datastore = &FakeConsul{}
 	KeyValues = &FakeKeyValues{}
 
 	defer func() {
-		Consul = oldConsul
+		Datastore = oldDatastore
 		KeyValues = oldKeyValues
 	}()
 
@@ -133,14 +133,14 @@ func TestHandleConfigPOST_only_token(t *testing.T) {
 }
 
 func TestHandleConfigPOST_no_body(t *testing.T) {
-	oldConsul := Consul
+	oldDatastore := Datastore
 	oldKeyValues := KeyValues
 
-	Consul = &FakeConsul{}
+	Datastore = &FakeConsul{}
 	KeyValues = &FakeKeyValues{}
 
 	defer func() {
-		Consul = oldConsul
+		Datastore = oldDatastore
 		KeyValues = oldKeyValues
 	}()
 
@@ -156,14 +156,14 @@ func TestHandleConfigPOST_no_body(t *testing.T) {
 }
 
 func TestHandleConfigPOST_ConsulError(t *testing.T) {
-	oldConsul := Consul
+	oldDatastore := Datastore
 	oldKeyValues := KeyValues
 
-	Consul = &FakeConsulErr{}
+	Datastore = &FakeConsulErr{}
 	KeyValues = &FakeKeyValuesErr{}
 
 	defer func() {
-		Consul = oldConsul
+		Datastore = oldDatastore
 		KeyValues = oldKeyValues
 	}()
 
@@ -196,14 +196,14 @@ func TestHandleConfigUpload_err(t *testing.T) {
 }
 
 func TestHandleDefaultConfigLoad(t *testing.T) {
-	oldConsul := Consul
+	oldDatastore := Datastore
 	oldKeyValues := KeyValues
 
-	Consul = &FakeConsul{}
+	Datastore = &FakeConsul{}
 	KeyValues = &FakeKeyValues{}
 
 	defer func() {
-		Consul = oldConsul
+		Datastore = oldDatastore
 		KeyValues = oldKeyValues
 	}()
 
@@ -215,14 +215,14 @@ func TestHandleDefaultConfigLoad(t *testing.T) {
 }
 
 func TestHandleDefaultConfigLoad_err(t *testing.T) {
-	oldConsul := Consul
+	oldDatastore := Datastore
 	oldKeyValues := KeyValues
 
-	Consul = &FakeConsul{}
+	Datastore = &FakeConsul{}
 	KeyValues = &FakeKeyValuesErr{}
 
 	defer func() {
-		Consul = oldConsul
+		Datastore = oldDatastore
 		KeyValues = oldKeyValues
 	}()
 

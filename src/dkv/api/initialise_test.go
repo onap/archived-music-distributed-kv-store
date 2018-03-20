@@ -22,20 +22,41 @@ import (
 	"testing"
 )
 
-func TestInitialise_errorIP(t *testing.T) {
-	consul_ip := os.Getenv("CONSUL_IP")
-	os.Unsetenv("CONSUL_IP")
-	defer os.Setenv("CONSUL_IP", consul_ip)
+func TestInitialise_cassandra(t *testing.T) {
+	oldDatastore_ip := os.Getenv("DATASTORE_IP")
+	oldDatastore_type := os.Getenv("DATASTORE")
+
+	os.Setenv("DATASTORE_IP", "localhost")
+	os.Setenv("DATASTORE", "cassandra")
+
+	defer func() {
+		os.Setenv("DATASTORE_IP", oldDatastore_ip)
+		os.Setenv("DATASTORE", oldDatastore_type)
+	}()
+
+	err := Initialise()
+	assert.Nil(t, err)
+}
+func TestInitialise_consulError(t *testing.T) {
+	oldDatastore_ip := os.Getenv("DATASTORE_IP")
+	oldDatastore_type := os.Getenv("DATASTORE")
+
+	os.Setenv("DATASTORE_IP", "localhost")
+	os.Setenv("DATASTORE", "consul")
+
+	defer func() {
+		os.Setenv("DATASTORE_IP", oldDatastore_ip)
+		os.Setenv("DATASTORE", oldDatastore_type)
+	}()
 
 	err := Initialise()
 	assert.NotNil(t, err)
 }
 
-func TestInitialise_errorConsul(t *testing.T) {
-	// This is done this way cause the Consul interface with Fake Struct will get
-	// overridden with real Struct during runtime.
-	os.Setenv("CONSUL_IP", "test")
-	defer os.Unsetenv("CONSUL_IP")
+func TestInitialise_datastoreEmptyError(t *testing.T) {
+	datastore := os.Getenv("DATASTORE")
+	os.Unsetenv("DATASTORE")
+	defer os.Setenv("DATASTORE", datastore)
 
 	err := Initialise()
 	assert.NotNil(t, err)

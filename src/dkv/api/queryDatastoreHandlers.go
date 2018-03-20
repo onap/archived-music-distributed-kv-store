@@ -38,7 +38,7 @@ func HandleGET(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	key := vars["token"] + "/" + vars["key"]
 
-	value, err := Consul.RequestGET(key)
+	value, err := Datastore.RequestGET(key)
 
 	if err != nil {
 		req := ResponseStringStruct{Response: string(err.Error())}
@@ -54,7 +54,7 @@ func HandleGET(w http.ResponseWriter, r *http.Request) {
 
 func HandleGETS(w http.ResponseWriter, r *http.Request) {
 
-	values, err := Consul.RequestGETS()
+	values, err := Datastore.RequestGETS()
 
 	if err != nil {
 		req := ResponseStringStruct{Response: string(err.Error())}
@@ -72,7 +72,7 @@ func HandleDELETE(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	key := vars["key"]
 
-	err := Consul.RequestDELETE(key)
+	err := Datastore.RequestDELETE(key)
 
 	if err != nil {
 		req := ResponseStringStruct{Response: string(err.Error())}
