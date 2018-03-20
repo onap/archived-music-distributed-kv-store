@@ -33,9 +33,9 @@ func RouterConsul() *mux.Router {
 }
 
 func TestHandleGETS(t *testing.T) {
-	oldConsul := Consul
-	Consul = &FakeConsul{}
-	defer func() { Consul = oldConsul }()
+	oldDataStore := Datastore
+	Datastore = &FakeConsul{}
+	defer func() { Datastore = oldDataStore }()
 
 	request, _ := http.NewRequest("GET", "/v1/getconfigs", nil)
 	response := httptest.NewRecorder()
@@ -45,9 +45,9 @@ func TestHandleGETS(t *testing.T) {
 }
 
 func TestHandleGETS_err(t *testing.T) {
-	oldConsul := Consul
-	Consul = &FakeConsulErr{}
-	defer func() { Consul = oldConsul }()
+	oldDataStore := Datastore
+	Datastore = &FakeConsulErr{}
+	defer func() { Datastore = oldDataStore }()
 
 	request, _ := http.NewRequest("GET", "/v1/getconfigs", nil)
 	response := httptest.NewRecorder()
@@ -57,9 +57,9 @@ func TestHandleGETS_err(t *testing.T) {
 }
 
 func TestHandleGET(t *testing.T) {
-	oldConsul := Consul
-	Consul = &FakeConsul{}
-	defer func() { Consul = oldConsul }()
+	oldDataStore := Datastore
+	Datastore = &FakeConsul{}
+	defer func() { Datastore = oldDataStore }()
 
 	request, _ := http.NewRequest("GET", "/v1/getconfig/key1", nil)
 	response := httptest.NewRecorder()
@@ -69,9 +69,9 @@ func TestHandleGET(t *testing.T) {
 }
 
 func TestHandleGET_err(t *testing.T) {
-	oldConsul := Consul
-	Consul = &FakeConsulErr{}
-	defer func() { Consul = oldConsul }()
+	oldDataStore := Datastore
+	Datastore = &FakeConsulErr{}
+	defer func() { Datastore = oldDataStore }()
 
 	request, _ := http.NewRequest("GET", "/v1/getconfig/key1", nil)
 	response := httptest.NewRecorder()
@@ -81,9 +81,9 @@ func TestHandleGET_err(t *testing.T) {
 }
 
 func TestHandleDELETE(t *testing.T) {
-	oldConsul := Consul
-	Consul = &FakeConsul{}
-	defer func() { Consul = oldConsul }()
+	oldDataStore := Datastore
+	Datastore = &FakeConsul{}
+	defer func() { Datastore = oldDataStore }()
 
 	request, _ := http.NewRequest("DELETE", "/v1/deleteconfig/key1", nil)
 	response := httptest.NewRecorder()
@@ -93,9 +93,9 @@ func TestHandleDELETE(t *testing.T) {
 }
 
 func TestHandleDELETE_err(t *testing.T) {
-	oldConsul := Consul
-	Consul = &FakeConsulErr{}
-	defer func() { Consul = oldConsul }()
+	oldDataStore := Datastore
+	Datastore = &FakeConsulErr{}
+	defer func() { Datastore = oldDataStore }()
 
 	request, _ := http.NewRequest("DELETE", "/v1/deleteconfig/key1", nil)
 	response := httptest.NewRecorder()
