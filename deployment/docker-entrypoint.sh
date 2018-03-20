@@ -9,8 +9,10 @@ function start_api_server {
     ./dkv
 }
 
-if [ "$CONSUL_IP" = "localhost" ]; then
-    start_consul_server
-    sleep 5
+if [ "$DATASTORE_IP" = "localhost" ]; then
+    if  [ "$DATASTORE" = "consul" ]; then
+        start_consul_server
+        sleep 5
+    fi
 fi
 start_api_server

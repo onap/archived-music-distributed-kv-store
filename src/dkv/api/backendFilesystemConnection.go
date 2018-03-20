@@ -49,8 +49,6 @@ const (
 
 var MOUNTPATH = ""
 
-var Directory DirectoryOperationer
-
 func (d *DirectoryStruct) CreateService(body CreateRegisterServiceBody) (string, error) {
 
 	// Having same name is prohibited?

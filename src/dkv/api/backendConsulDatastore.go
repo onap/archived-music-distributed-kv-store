@@ -22,38 +22,16 @@ import (
 	"os"
 )
 
-// Interface to have all signature methods.
-type ConsulRequester interface {
-	InitializeConsulClient() error
-	CheckConsulHealth() error
-	RequestPUT(string, string) error
-	RequestGET(string) (string, error)
-	RequestGETS() ([]string, error)
-	RequestDELETE(string) error
-}
-
 type ConsulStruct struct {
 	consulClient *consulapi.Client
 }
 
-/*
-This var is an interface used to initialize ConsulStruct when the who API is brought up. This is done this way so
-that a fake Consul can be created which satisfies the interface and we can use that fake Consul in unit testing.
-*/
-var Consul ConsulRequester
-
-/*
-The following functions seems like they are not used. But since they are following the ConsulRequest interface,
-they can be visible to any Struct which is initiated using the ConsulRequest. This is done for this project in
-the initialise.go file where we are creating a ConsulStruct and assigning it to Consul var which is declared
-above.
-*/
-func (c *ConsulStruct) InitializeConsulClient() error {
-	if os.Getenv("CONSUL_IP") == "" {
-		return errors.New("CONSUL_IP environment variable not set.")
+func (c *ConsulStruct) InitializeDatastoreClient() error {
+	if os.Getenv("DATASTORE_IP") == "" {
+		return errors.New("DATASTORE_IP environment variable not set.")
 	}
 	config := consulapi.DefaultConfig()
-	config.Address = os.Getenv("CONSUL_IP") + ":8500"
+	config.Address = os.Getenv("DATASTORE_IP") + ":8500"
 
 	client, err := consulapi.NewClient(config)
 	if err != nil {
@@ -64,11 +42,11 @@ func (c *ConsulStruct) InitializeConsulClient() error {
 	return nil
 }
 
-func (c *ConsulStruct) CheckConsulHealth() error {
+func (c *ConsulStruct) CheckDatastoreHealth() error {
 	kv := c.consulClient.KV()
 	_, _, err := kv.Get("test", nil)
 	if err != nil {
-		return errors.New("[ERROR] Cannot talk to Consul. Check if it is running/reachable.")
+		return errors.New("[ERROR] Cannot talk to Datastore. Check if it is running/reachable.")
 	}
 	return nil
 }

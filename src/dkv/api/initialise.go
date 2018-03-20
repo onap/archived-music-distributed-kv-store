@@ -16,19 +16,35 @@
 
 package api
 
-import "os"
+import (
+	"errors"
+	"os"
+)
+
+var (
+	Datastore DatastoreConnector
+	KeyValues KeyValuesInterface
+	Directory DirectoryOperationer
+)
 
 func Initialise() error {
-	Consul = &ConsulStruct{}
+	if os.Getenv("DATASTORE") == "" {
+		return errors.New("DATASTORE environment variable not set.")
+	}
+	if os.Getenv("DATASTORE") == "consul" {
+		Datastore = &ConsulStruct{}
+	} else if os.Getenv("DATASTORE") == "cassandra" {
+		Datastore = &CassandraStruct{}
+	}
 	KeyValues = &KeyValuesStruct{}
 	Directory = &DirectoryStruct{directory: ""}
 
-	err := Consul.InitializeConsulClient()
+	err := Datastore.InitializeDatastoreClient()
 	if err != nil {
 		return err
 	}
 
-	err = Consul.CheckConsulHealth()
+	err = Datastore.CheckDatastoreHealth()
 	if err != nil {
 		return err
 	}
