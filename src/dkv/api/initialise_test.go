@@ -22,6 +22,14 @@ import (
 	"testing"
 )
 
+func TestInitialise_errorDatastore(t *testing.T) {
+	datastore := os.Getenv("DATASTORE")
+	os.Unsetenv("DATASTORE")
+	defer os.Setenv("DATASTORE", datastore)
+
+	err := Initialise()
+	assert.NotNil(t, err)
+}
 func TestInitialise_errorIP(t *testing.T) {
 	consul_ip := os.Getenv("CONSUL_IP")
 	os.Unsetenv("CONSUL_IP")
