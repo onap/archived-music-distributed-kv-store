@@ -34,8 +34,6 @@ type KeyValuesInterface interface {
 
 type KeyValuesStruct struct{}
 
-var KeyValues KeyValuesInterface
-
 func (kvStruct *KeyValuesStruct) WriteKVsToConsul(token string, subdomain string, kvs map[string]string) error {
 	var prefix = ""
 	if subdomain != "" {
@@ -45,7 +43,7 @@ func (kvStruct *KeyValuesStruct) WriteKVsToConsul(token string, subdomain string
 	}
 	for key, value := range kvs {
 		key = prefix + key
-		err := Consul.RequestPUT(key, value)
+		err := Datastore.RequestPUT(key, value)
 		if err != nil {
 			return err
 		}
