@@ -16,6 +16,22 @@ if [ $HTTPS_PROXY ]; then
     BUILD_ARGS+=" --build-arg HTTPS_PROXY=${HTTPS_PROXY}"
 fi
 
+function install_build_dependencies {
+    local golang_version=go1.10.linux-amd64
+    sudo apt-get install -y build-essential
+    if [ ! -d /opt/go ]; then
+        mkdir /opt/go
+        pushd /opt/go
+        curl -O https://dl.google.com/go/$golang_version.tar.gz
+        tar -zxf $golang_version.tar.gz
+        echo GOROOT=$PWD/go >> /etc/environment
+        echo PATH=$PATH:$PWD/go/bin >> /etc/environment
+        rm -rf tar -zxf $golang_version.tar.gz
+        popd
+    fi
+    source /etc/environment
+}
+
 function generate_binary {
     pushd ../src/dkv
     make build
@@ -37,6 +53,7 @@ function remove_binary {
     rm dkv
 }
 
+install_build_dependencies
 generate_binary
 build_image
 push_image
