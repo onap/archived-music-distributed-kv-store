@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_1ec06e29",
+        "filename": "deployment/docker-entrypoint.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 301
+      },
+      "writtenOn": "2018-03-22T23:24:04Z",
+      "side": 1,
+      "message": "Maybe rename this from consul to your generic names?",
+      "range": {
+        "startLine": 13,
+        "startChar": 10,
+        "endLine": 13,
+        "endChar": 16
+      },
+      "revId": "11ea26e8ba8c059ef0610c9bec847d6ef0856333",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_be037a75",
+        "filename": "src/dkv/api/backendDatastoreConnection.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 301
+      },
+      "writtenOn": "2018-03-22T23:24:04Z",
+      "side": 1,
+      "message": "Move the interface definitions to a generic dataStore.go\nSeparates definition from implementation",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 1
+      },
+      "revId": "11ea26e8ba8c059ef0610c9bec847d6ef0856333",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_7efdf26d",
+        "filename": "src/dkv/api/backendDatastoreConnection.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 301
+      },
+      "writtenOn": "2018-03-22T23:24:04Z",
+      "side": 1,
+      "message": "Move this code to consul.go\nSee sms/backend for example of what I am talking about.",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 1
+      },
+      "revId": "11ea26e8ba8c059ef0610c9bec847d6ef0856333",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_1ed70eef",
+        "filename": "src/dkv/api/backendDatastoreConnection.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 301
+      },
+      "writtenOn": "2018-03-22T23:24:04Z",
+      "side": 1,
+      "message": "Move this to a different file cassandra.go\nThat might help seperate out the code since it does not need to sit along with any consul specific code.\n\nAll these three suggested files can go under a single backend package.",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 149,
+        "endChar": 1
+      },
+      "revId": "11ea26e8ba8c059ef0610c9bec847d6ef0856333",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
