@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5a93c517_1e45ceb2",
+        "filename": "deployment/docker-entrypoint.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 991
+      },
+      "writtenOn": "2018-03-22T23:44:24Z",
+      "side": 1,
+      "message": "Done. Added a basic check for now.",
+      "parentUuid": "5a93c517_1ec06e29",
+      "range": {
+        "startLine": 13,
+        "startChar": 10,
+        "endLine": 13,
+        "endChar": 16
+      },
+      "revId": "11ea26e8ba8c059ef0610c9bec847d6ef0856333",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a93c517_be037a75",
         "filename": "src/dkv/api/backendDatastoreConnection.go",
         "patchSetId": 4
@@ -36,6 +60,30 @@
       "writtenOn": "2018-03-22T23:24:04Z",
       "side": 1,
       "message": "Move the interface definitions to a generic dataStore.go\nSeparates definition from implementation",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 1
+      },
+      "revId": "11ea26e8ba8c059ef0610c9bec847d6ef0856333",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_be113ab1",
+        "filename": "src/dkv/api/backendDatastoreConnection.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 991
+      },
+      "writtenOn": "2018-03-22T23:44:24Z",
+      "side": 1,
+      "message": "Done. Moved it around.",
+      "parentUuid": "5a93c517_be037a75",
       "range": {
         "startLine": 25,
         "startChar": 0,
