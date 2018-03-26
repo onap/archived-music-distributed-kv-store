@@ -43,6 +43,10 @@ type DirectoryStruct struct {
 	directory string
 }
 
+/*
+TODO(sshank): This needs to be made completely stateless or else each container running this API will not have
+same data in token_service_map.json
+*/
 const (
 	JSONPATH = "api/token_service_map.json"
 )

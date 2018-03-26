@@ -21,6 +21,9 @@ function generate_binary {
     make build
     popd
     cp ../target/dkv .
+
+    # Change the following work around for reading token_service.json
+    cp ../src/dkv/api/token_service_map.json .
 }
 
 function build_image {

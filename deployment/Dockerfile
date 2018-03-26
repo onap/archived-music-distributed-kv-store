@@ -5,7 +5,7 @@ ARG HTTPS_PROXY=${HTTPS_PROXY}
 
 ENV http_proxy $HTTP_PROXY
 ENV https_proxy $HTTPS_PROXY
-ENV CONSUL_IP $CONSUL_IP
+ENV DATASTORE_IP $DATASTORE_IP
 ENV CONSUL_VERSION 1.0.6
 
 RUN apk update && \
@@ -27,12 +27,14 @@ EXPOSE 8080
 
 
 RUN mkdir /dkv_mount_path && \
+    mkdir /dkv_mount_path/api && \
     mkdir /dkv_mount_path/consul_data && \
     mkdir /dkv_mount_path/configs && \
     mkdir /dkv_mount_path/configs/default
 
 WORKDIR /dkv_mount_path
 ADD ./dkv /dkv_mount_path/
+ADD ./token_service_map.json /dkv_mount_path/api/
 ADD ./docker-entrypoint.sh /dkv_mount_path/
 
 ENTRYPOINT /dkv_mount_path/docker-entrypoint.sh
