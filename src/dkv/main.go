@@ -51,6 +51,8 @@ func main() {
 	router.HandleFunc("/v1/config/load-default", api.HandleDefaultConfigLoad).Methods("GET")
 	// Direct Consul queries.
 	router.HandleFunc("/v1/getconfig/{token}/{key}", api.HandleGET).Methods("GET")
+	// TODO(sshank): Following methods should not be allowed for all users. Remove it or make sure
+	// its accessible only by admin.
 	router.HandleFunc("/v1/deleteconfig/{key}", api.HandleDELETE).Methods("DELETE")
 	router.HandleFunc("/v1/getconfigs", api.HandleGETS).Methods("GET")
 
