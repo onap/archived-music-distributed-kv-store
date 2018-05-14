@@ -49,7 +49,8 @@ func main() {
 	router.HandleFunc("/v1/config/load", api.HandleConfigLoad).Methods("POST")
 	// Load default configs
 	router.HandleFunc("/v1/config/load-default", api.HandleDefaultConfigLoad).Methods("GET")
-	// Direct Consul queries.
+
+	// Direct Datastore queries.
 	router.HandleFunc("/v1/getconfig/{token}/{key}", api.HandleGET).Methods("GET")
 	// TODO(sshank): Following methods should not be allowed for all users. Remove it or make sure
 	// its accessible only by admin.

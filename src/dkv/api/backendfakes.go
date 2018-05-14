@@ -43,15 +43,15 @@ func (f *FakeConsul) RequestGETS() ([]string, error) {
 	return []string{"key1", "key2"}, nil
 }
 
-func (f *FakeConsul) RequestGET(key string) (string, error) {
+func (f *FakeConsul) RequestGET(key string, token string) (string, error) {
 	return key, nil
 }
 
-func (f *FakeConsul) RequestPUT(key string, value string) error {
+func (f *FakeConsul) RequestPUT(key string, value string, token string) error {
 	return nil
 }
 
-func (f *FakeConsul) RequestDELETE(key string) error {
+func (f *FakeConsul) RequestDELETE(key string, token string) error {
 	return nil
 }
 
@@ -72,11 +72,11 @@ func (f *FakeConsulErr) RequestGETS() ([]string, error) {
 	return []string{"", ""}, errors.New("Internal Server Error")
 }
 
-func (f *FakeConsulErr) RequestGET(key string) (string, error) {
+func (f *FakeConsulErr) RequestGET(key string, token string) (string, error) {
 	return "", errors.New("Internal Server Error")
 }
 
-func (f *FakeConsulErr) RequestDELETE(key string) error {
+func (f *FakeConsulErr) RequestDELETE(key string, token string) error {
 	return errors.New("Internal Server Error")
 }
 
@@ -94,7 +94,7 @@ func (f *FakeKeyValues) ConfigReader(token string, subdomain string, filename st
 	return kvs, nil
 }
 
-func (f *FakeKeyValues) WriteKVsToConsul(token string, subdomain string, kvs map[string]string) error {
+func (f *FakeKeyValues) WriteKVsToDatastore(token string, subdomain string, kvs map[string]string) error {
 	return nil
 }
 
@@ -108,7 +108,7 @@ func (f *FakeKeyValuesErr) ConfigReader(token string, subdomain string, filename
 	return kvs, errors.New("Internal Server Error")
 }
 
-func (f *FakeKeyValuesErr) WriteKVsToConsul(token string, subdomain string, kvs map[string]string) error {
+func (f *FakeKeyValuesErr) WriteKVsToDatastore(token string, subdomain string, kvs map[string]string) error {
 	return errors.New("Internal Server Error")
 }
 

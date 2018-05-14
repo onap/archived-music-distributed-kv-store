@@ -25,7 +25,7 @@ import (
 )
 
 type KeyValuesInterface interface {
-	WriteKVsToConsul(string, string, map[string]string) error
+	WriteKVsToDatastore(string, string, map[string]string) error
 	ConfigReader(string, string, string) (map[string]string, error)
 	ReadMultiplePropertiesRecursive(string, *map[string]string) error
 	ReadMultipleProperties(string, *map[string]string) error
@@ -34,16 +34,15 @@ type KeyValuesInterface interface {
 
 type KeyValuesStruct struct{}
 
-func (kvStruct *KeyValuesStruct) WriteKVsToConsul(token string, subdomain string, kvs map[string]string) error {
+func (kvStruct *KeyValuesStruct) WriteKVsToDatastore(token string, subdomain string, kvs map[string]string) error {
 	var prefix = ""
 	if subdomain != "" {
-		prefix += token + "/" + subdomain
+		prefix += token + "/" + subdomain + "/"
 	} else {
 		prefix += token + "/"
 	}
 	for key, value := range kvs {
-		key = prefix + key
-		err := Datastore.RequestPUT(key, value)
+		err := Datastore.RequestPUT(prefix, key, value)
 		if err != nil {
 			return err
 		}

@@ -111,7 +111,7 @@ func HandleConfigLoad(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = KeyValues.WriteKVsToConsul(body.Token, body.Subdomain, kvs_map)
+	err = KeyValues.WriteKVsToDatastore(body.Token, body.Subdomain, kvs_map)
 
 	if err != nil {
 		GenerateResponse(w, r, http.StatusInternalServerError, string(err.Error()))
@@ -126,7 +126,7 @@ func HandleDefaultConfigLoad(w http.ResponseWriter, r *http.Request) {
 		GenerateResponse(w, r, http.StatusInternalServerError, string(err.Error()))
 		return
 	}
-	err = KeyValues.WriteKVsToConsul("default", "", kvs_map)
+	err = KeyValues.WriteKVsToDatastore("default", "", kvs_map)
 	if err != nil {
 		GenerateResponse(w, r, http.StatusInternalServerError, string(err.Error()))
 	} else {

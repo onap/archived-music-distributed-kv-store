@@ -20,8 +20,8 @@ package api
 type DatastoreConnector interface {
 	InitializeDatastoreClient() error
 	CheckDatastoreHealth() error
-	RequestPUT(string, string) error
-	RequestGET(string) (string, error)
+	RequestPUT(string, string, string) error
+	RequestGET(string, string) (string, error)
 	RequestGETS() ([]string, error)
-	RequestDELETE(string) error
+	RequestDELETE(string, string) error
 }

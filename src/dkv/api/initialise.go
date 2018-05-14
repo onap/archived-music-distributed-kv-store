@@ -35,6 +35,8 @@ func Initialise() error {
 		Datastore = &ConsulStruct{}
 	} else if os.Getenv("DATASTORE") == "cassandra" {
 		Datastore = &CassandraStruct{}
+	} else {
+		return errors.New("Unrecognised Datastore. Supports only consul or cassandra")
 	}
 	KeyValues = &KeyValuesStruct{}
 	Directory = &DirectoryStruct{directory: ""}

@@ -16,11 +16,19 @@
 
 package api
 
+import (
+	"errors"
+	"os"
+)
+
 // (TODO)sahank: Complete MUSIC Cassandra Connections.
 
 type CassandraStruct struct{}
 
 func (c *CassandraStruct) InitializeDatastoreClient() error {
+	if os.Getenv("DATASTORE_IP") == "" {
+		return errors.New("DATASTORE_IP environment variable not set.")
+	}
 	return nil
 }
 
@@ -28,11 +36,11 @@ func (c *CassandraStruct) CheckDatastoreHealth() error {
 	return nil
 }
 
-func (c *CassandraStruct) RequestPUT(key string, value string) error {
+func (c *CassandraStruct) RequestPUT(prefix string, key string, value string) error {
 	return nil
 }
 
-func (c *CassandraStruct) RequestGET(key string) (string, error) {
+func (c *CassandraStruct) RequestGET(prefix string, key string) (string, error) {
 	return "", nil
 }
 
@@ -40,6 +48,6 @@ func (c *CassandraStruct) RequestGETS() ([]string, error) {
 	return []string{"", ""}, nil
 }
 
-func (c *CassandraStruct) RequestDELETE(key string) error {
+func (c *CassandraStruct) RequestDELETE(prefix string, key string) error {
 	return nil
 }

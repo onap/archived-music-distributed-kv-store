@@ -50,7 +50,7 @@ func TestInitialise_consulError(t *testing.T) {
 	}()
 
 	err := Initialise()
-	assert.NotNil(t, err)
+	assert.Nil(t, err)
 }
 
 func TestInitialise_datastoreEmptyError(t *testing.T) {

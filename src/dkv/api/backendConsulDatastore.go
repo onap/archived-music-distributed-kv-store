@@ -51,8 +51,8 @@ func (c *ConsulStruct) CheckDatastoreHealth() error {
 	return nil
 }
 
-func (c *ConsulStruct) RequestPUT(key string, value string) error {
-
+func (c *ConsulStruct) RequestPUT(prefix string, key string, value string) error {
+	key = prefix + key
 	kv := c.consulClient.KV()
 
 	p := &consulapi.KVPair{Key: key, Value: []byte(value)}
@@ -66,7 +66,8 @@ func (c *ConsulStruct) RequestPUT(key string, value string) error {
 	return nil
 }
 
-func (c *ConsulStruct) RequestGET(key string) (string, error) {
+func (c *ConsulStruct) RequestGET(prefix string, key string) (string, error) {
+	key = prefix + key
 
 	kv := c.consulClient.KV()
 
@@ -98,7 +99,8 @@ func (c *ConsulStruct) RequestGETS() ([]string, error) {
 	return res, err
 }
 
-func (c *ConsulStruct) RequestDELETE(key string) error {
+func (c *ConsulStruct) RequestDELETE(prefix string, key string) error {
+	key = prefix + key
 	kv := c.consulClient.KV()
 
 	_, err := kv.Delete(key, nil)

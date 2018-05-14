@@ -36,9 +36,9 @@ type ResponseGETSStruct struct {
 
 func HandleGET(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	key := vars["token"] + "/" + vars["key"]
+	key := vars["key"]
 
-	value, err := Datastore.RequestGET(key)
+	value, err := Datastore.RequestGET(vars["token"], key)
 
 	if err != nil {
 		req := ResponseStringStruct{Response: string(err.Error())}
@@ -70,9 +70,8 @@ func HandleGETS(w http.ResponseWriter, r *http.Request) {
 
 func HandleDELETE(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	key := vars["key"]
 
-	err := Datastore.RequestDELETE(key)
+	err := Datastore.RequestDELETE(vars["token"], vars["key"])
 
 	if err != nil {
 		req := ResponseStringStruct{Response: string(err.Error())}
