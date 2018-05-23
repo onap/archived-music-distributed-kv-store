@@ -23,7 +23,7 @@ function generate_binary {
     cp ../target/dkv .
 
     # Change the following work around for reading token_service.json
-    cp ../src/dkv/api/token_service_map.json .
+    # cp ../src/dkv/api/token_service_map.json .
 }
 
 function build_image {
@@ -42,5 +42,5 @@ function remove_binary {
 
 generate_binary
 build_image
-push_image
+#push_image
 remove_binary

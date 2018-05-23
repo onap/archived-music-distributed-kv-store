@@ -27,11 +27,41 @@ var (
 	IoutilRead  = ioutil.ReadFile
 	IoutilWrite = ioutil.WriteFile
 	JsonReader  = ReadJSON
+	JsonChecker = CheckJSONExists
+	JsonCreate  = CreateJSON
 )
 
 type Token_service_map struct {
 	Token   string `json:"token"`
 	Service string `json:"service"`
+}
+
+func CheckJSONExists(path string) (bool, error) {
+	_, err := IoutilRead(path)
+
+	if err != nil {
+		return false, err
+	} else {
+		return true, nil
+	}
+}
+
+func CreateJSON(path string) error {
+	var tsm Token_service_map
+	var tsm_list []Token_service_map
+
+	tsm.Token = "default"
+	tsm.Service = "default"
+	tsm_list = append(tsm_list, tsm)
+	raw, err := json.Marshal(tsm_list)
+	if err != nil {
+		return err
+	}
+	err = IoutilWrite(path, raw, 0644)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func ReadJSON(path string) ([]Token_service_map, error) {

@@ -18,6 +18,7 @@ package api
 
 import (
 	"errors"
+	"log"
 	"os"
 )
 
@@ -31,6 +32,7 @@ func Initialise() error {
 	if os.Getenv("DATASTORE") == "" {
 		return errors.New("DATASTORE environment variable not set.")
 	}
+
 	if os.Getenv("DATASTORE") == "consul" {
 		Datastore = &ConsulStruct{}
 	} else if os.Getenv("DATASTORE") == "cassandra" {
@@ -38,10 +40,20 @@ func Initialise() error {
 	} else {
 		return errors.New("Unrecognised Datastore. Supports only consul or cassandra")
 	}
+
+	jsonExists, err := JsonChecker(JSONPATH)
+	if jsonExists == false {
+		log.Println("[INFO] token_service_map.json not found. Creating.")
+		err = JsonCreate(JSONPATH)
+		if err != nil {
+			return err
+		}
+	}
+
 	KeyValues = &KeyValuesStruct{}
 	Directory = &DirectoryStruct{directory: ""}
 
-	err := Datastore.InitializeDatastoreClient()
+	err = Datastore.InitializeDatastoreClient()
 	if err != nil {
 		return err
 	}
