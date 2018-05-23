@@ -21,6 +21,47 @@ import (
 	"testing"
 )
 
+func TestCheckJSONExists(t *testing.T) {
+	oldIoutilRead := IoutilRead
+
+	defer func() {
+		IoutilRead = oldIoutilRead
+	}()
+
+	IoutilRead = func(path string) ([]byte, error) {
+		return []byte("test"), nil
+	}
+
+	_, err := JsonChecker("path")
+	assert.Equal(t, nil, err, "Error should be nil.")
+}
+
+func TestCreateJSON(t *testing.T) {
+	oldIoutilWrite := IoutilWrite
+
+	defer func() {
+		IoutilWrite = oldIoutilWrite
+	}()
+
+	IoutilWrite = func(val string, b []byte, f os.FileMode) error {
+		return nil
+	}
+
+	err := JsonCreate("path")
+	assert.Equal(t, nil, err, "Error should be nil.")
+}
+
+func TestCheckJSONExists_err(t *testing.T) {
+	oldIoutilRead := IoutilRead
+
+	defer func() {
+		IoutilRead = oldIoutilRead
+	}()
+
+	_, err := JsonChecker("path")
+	assert.NotNil(t, err, "Err should not be nil.")
+}
+
 func TestReadJSON(t *testing.T) {
 	oldIoutilRead := IoutilRead
 
@@ -77,7 +118,6 @@ func TestWriteJSON(t *testing.T) {
 	assert.Equal(t, nil, err, "Error should be nil.")
 
 }
-
 func TestDeleteInJSON(t *testing.T) {
 	oldReadJson := JsonReader
 	defer func() {

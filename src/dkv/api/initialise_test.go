@@ -22,24 +22,11 @@ import (
 	"testing"
 )
 
-func TestInitialise_cassandra(t *testing.T) {
+func TestInitialise_consul(t *testing.T) {
 	oldDatastore_ip := os.Getenv("DATASTORE_IP")
 	oldDatastore_type := os.Getenv("DATASTORE")
-
-	os.Setenv("DATASTORE_IP", "localhost")
-	os.Setenv("DATASTORE", "cassandra")
-
-	defer func() {
-		os.Setenv("DATASTORE_IP", oldDatastore_ip)
-		os.Setenv("DATASTORE", oldDatastore_type)
-	}()
-
-	err := Initialise()
-	assert.Nil(t, err)
-}
-func TestInitialise_consulError(t *testing.T) {
-	oldDatastore_ip := os.Getenv("DATASTORE_IP")
-	oldDatastore_type := os.Getenv("DATASTORE")
+	oldJsonExists := JsonChecker
+	oldJsonCreate := JsonCreate
 
 	os.Setenv("DATASTORE_IP", "localhost")
 	os.Setenv("DATASTORE", "consul")
@@ -47,16 +34,81 @@ func TestInitialise_consulError(t *testing.T) {
 	defer func() {
 		os.Setenv("DATASTORE_IP", oldDatastore_ip)
 		os.Setenv("DATASTORE", oldDatastore_type)
+		JsonCreate = oldJsonCreate
+		JsonChecker = oldJsonExists
 	}()
+
+	JsonChecker = func(path string) (bool, error) {
+		return false, nil
+	}
+
+	JsonCreate = func(path string) error {
+		return nil
+	}
 
 	err := Initialise()
 	assert.NotNil(t, err)
 }
 
-func TestInitialise_datastoreEmptyError(t *testing.T) {
+func TestInitialise_cassandra(t *testing.T) {
+	oldDatastore_ip := os.Getenv("DATASTORE_IP")
+	oldDatastore_type := os.Getenv("DATASTORE")
+	oldMOUNTPATH := os.Getenv("MOUNTPATH")
+	oldJsonChecker := JsonChecker
+
+	os.Setenv("DATASTORE_IP", "localhost")
+	os.Setenv("DATASTORE", "cassandra")
+
+	defer func() {
+		os.Setenv("DATASTORE_IP", oldDatastore_ip)
+		os.Setenv("DATASTORE", oldDatastore_type)
+		os.Setenv("MOUNTPATH", oldMOUNTPATH)
+		JsonChecker = oldJsonChecker
+	}()
+
+	JsonChecker = func(path string) (bool, error) {
+		return true, nil
+	}
+
+	err := Initialise()
+	assert.Nil(t, err)
+}
+
+func TestInitialise_datastoreUnknown(t *testing.T) {
 	datastore := os.Getenv("DATASTORE")
-	os.Unsetenv("DATASTORE")
 	defer os.Setenv("DATASTORE", datastore)
+	os.Setenv("DATASTORE", "test")
+
+	err := Initialise()
+	assert.NotNil(t, err)
+}
+
+func TestInitialise_datastoreEmpty(t *testing.T) {
+	datastore := os.Getenv("DATASTORE")
+	defer os.Setenv("DATASTORE", datastore)
+	os.Setenv("DATASTORE", "")
+
+	err := Initialise()
+	assert.NotNil(t, err)
+}
+
+func TestInitialise_noJSON(t *testing.T) {
+	oldDatastore_ip := os.Getenv("DATASTORE_IP")
+	oldDatastore_type := os.Getenv("DATASTORE")
+	oldJsonChecker := JsonChecker
+
+	os.Setenv("DATASTORE_IP", "localhost")
+	os.Setenv("DATASTORE", "consul")
+
+	defer func() {
+		os.Setenv("DATASTORE_IP", oldDatastore_ip)
+		os.Setenv("DATASTORE", oldDatastore_type)
+		JsonChecker = oldJsonChecker
+	}()
+
+	JsonChecker = func(path string) (bool, error) {
+		return false, nil
+	}
 
 	err := Initialise()
 	assert.NotNil(t, err)
