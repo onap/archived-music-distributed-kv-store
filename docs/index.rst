@@ -7,7 +7,6 @@ Distributed KV store Documentation
 .. toctree::
    :maxdepth: 1
 
-    index
-    installation
-    offeredapis
-    commandsamples
+    Installation <installation>
+    Offered APIs <offeredapis>
+    Command Samples <commandsamples>

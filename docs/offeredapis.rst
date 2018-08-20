@@ -4,4 +4,4 @@
 Offered APIs
 ============
 
-.. swaggerv2doc:: swagger.yaml
+.. swaggerv2doc:: swagger.json
