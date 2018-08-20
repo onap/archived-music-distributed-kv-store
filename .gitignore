@@ -9,3 +9,5 @@ target/
 src/github.com/
 .vscode
 src/golang.org/
+.tox/
+docs/build/

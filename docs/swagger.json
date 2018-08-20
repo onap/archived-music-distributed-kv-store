@@ -1,0 +1,653 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "API reference for Distributed Key Value store.",
+    "version": "1.0.0",
+    "title": "API reference for Distributed Key Value store",
+    "contact": {
+      "email": "shashank.kumar.shankar@intel.com",
+      "url": "https://wiki.onap.org/pages/viewpage.action?pageId=16010913"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "basePath": "/v1",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/register": {
+      "post": {
+        "tags": [
+          "Domain"
+        ],
+        "summary": "Endpoint to Register new domain",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Register new domain.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RegisterDomainPOSTRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/RegisterDomainPOSTResponse"
+            }
+          }
+        }
+      }
+    },
+    "/register/{token}": {
+      "get": {
+        "tags": [
+          "Domain"
+        ],
+        "summary": "Check if domain is registered.",
+        "description": "Check if domain is registered identified by token.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "Token used to query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/RegisterDomainGETResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Domain"
+        ],
+        "summary": "Delete registered domain.",
+        "description": "Deletes a registered domain identified by token.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "Token used to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/RegisterDomainDELETEResponse"
+            }
+          }
+        }
+      }
+    },
+    "/register/{token}/subdomain": {
+      "post": {
+        "tags": [
+          "Subdomain"
+        ],
+        "summary": "Endpoint to Register new subdomain",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "Token used to identify domain.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Register new subdomain.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RegisterSubdomainPOSTRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/RegisterSubdomainPOSTResponse"
+            }
+          }
+        }
+      }
+    },
+    "/register/{token}/subdomain/{subdomain}": {
+      "delete": {
+        "tags": [
+          "Subdomain"
+        ],
+        "summary": "Delete registered subdomain.",
+        "description": "Deletes a registered subdomain identified by token and subdomain.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "Token used to delete",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "subdomain",
+            "in": "path",
+            "description": "Subdomain used to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/RegisterSubDomainDELETEResponse"
+            }
+          }
+        }
+      }
+    },
+    "/config": {
+      "post": {
+        "tags": [
+          "Config"
+        ],
+        "summary": "Endpoint to upload configuration.",
+        "description": "Endpoint to upload configuration.",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "configFile",
+            "in": "formData",
+            "description": "Config file to be uploaded.",
+            "required": true,
+            "type": "file"
+          },
+          {
+            "name": "token",
+            "in": "formData",
+            "description": "Token to identify domain to upload config file to.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "subdomain",
+            "in": "formData",
+            "description": "Subdomain to identify subdomain to upload config file to.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ConfigUploadResponse"
+            }
+          }
+        }
+      }
+    },
+    "/config/{token}/{filename}": {
+      "get": {
+        "tags": [
+          "Config"
+        ],
+        "summary": "Get config file.",
+        "description": "Get config file identified by token and filename.",
+        "produces": [
+          "file"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "Token used to get config file.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "filename",
+            "in": "path",
+            "description": "Filename used to get config file.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Config"
+        ],
+        "summary": "Delete config file.",
+        "description": "Deletes a config file identified by token and filename.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "Token used to delete",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "filename",
+            "in": "path",
+            "description": "Filename used to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ConfigDomainDELETEResponse"
+            }
+          }
+        }
+      }
+    },
+    "/config/{token}/{subdomain}/{filename}": {
+      "get": {
+        "tags": [
+          "Config"
+        ],
+        "summary": "Get config file from subdomain.",
+        "description": "Get config file identified by token, filename and subdomain.",
+        "produces": [
+          "file"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "Token used to get config file.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "subdomain",
+            "in": "path",
+            "description": "Subdomain used to get config file.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "filename",
+            "in": "path",
+            "description": "Filename used to get config file.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Config"
+        ],
+        "summary": "Delete config file from subdomain.",
+        "description": "Deletes a config file identified by token, filename and subdomain.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "Token used to delete config file.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "subdomain",
+            "in": "path",
+            "description": "Subdomain used to delete config file.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "filename",
+            "in": "path",
+            "description": "Filename used to delete config file.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ConfigSubDomainDELETEResponse"
+            }
+          }
+        }
+      }
+    },
+    "/config/load": {
+      "post": {
+        "tags": [
+          "Config"
+        ],
+        "summary": "Load config into Consul.",
+        "description": "Load config into Consul upon hitting the endpoint.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Load configuration from file system to be added into Consul",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ConfigLoadPOSTRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ConfigLoadPOSTResponse"
+            }
+          }
+        }
+      }
+    },
+    "/config/load-default": {
+      "get": {
+        "tags": [
+          "Config"
+        ],
+        "summary": "Load default config into Consul.",
+        "description": "Load default config into Consul upon hitting the endpoint.",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ConfigDefaultGETResponse"
+            }
+          }
+        }
+      }
+    },
+    "/getconfigs": {
+      "get": {
+        "tags": [
+          "Consul operation"
+        ],
+        "summary": "Get all keys present in Consul.",
+        "description": "Returns a list of keys present in Consul.",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ConsulGETAllResponse"
+            }
+          }
+        }
+      }
+    },
+    "/getconfig/{key}": {
+      "get": {
+        "tags": [
+          "Consul operation"
+        ],
+        "summary": "Get value for specific key present in Consul.",
+        "description": "Returns a key and value present in Consul.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "description": "Key used to query Consul.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ConsulGETResponse"
+            }
+          }
+        }
+      }
+    },
+    "/deleteconfig/{key}": {
+      "delete": {
+        "tags": [
+          "Consul operation"
+        ],
+        "summary": "Delete value for specific key present in Consul.",
+        "description": "Deletes a specific key.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "description": "Key used to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ConsulDELETEResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "RegisterDomainPOSTRequest": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        }
+      }
+    },
+    "RegisterDomainPOSTResponse": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "string"
+        }
+      }
+    },
+    "RegisterDomainGETResponse": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "string"
+        }
+      }
+    },
+    "RegisterDomainDELETEResponse": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "string"
+        }
+      }
+    },
+    "RegisterSubdomainPOSTRequest": {
+      "type": "object",
+      "properties": {
+        "subdomain": {
+          "type": "string"
+        }
+      }
+    },
+    "RegisterSubdomainPOSTResponse": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "string"
+        }
+      }
+    },
+    "RegisterSubDomainDELETEResponse": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "string"
+        }
+      }
+    },
+    "ConfigUploadResponse": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "string"
+        }
+      }
+    },
+    "ConfigDomainDELETEResponse": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "string"
+        }
+      }
+    },
+    "ConfigSubDomainDELETEResponse": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "string"
+        }
+      }
+    },
+    "ConfigLoadPOSTRequest": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "filename": {
+          "type": "string"
+        },
+        "subdomain": {
+          "type": "string"
+        }
+      }
+    },
+    "ConfigLoadPOSTResponse": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "string"
+        }
+      }
+    },
+    "ConfigDefaultGETResponse": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "string"
+        }
+      }
+    },
+    "ConsulGETAllResponse": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ConsulGETResponse": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "string"
+        }
+      }
+    },
+    "ConsulDELETEResponse": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
