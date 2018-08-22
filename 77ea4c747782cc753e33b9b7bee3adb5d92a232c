@@ -1,0 +1,9 @@
+Code-Review+2: Shashank Kumar Shankar <shashank.kumar.shankar@intel.com>
+Verified+1: Shashank Kumar Shankar <shashank.kumar.shankar@intel.com>
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+2: Bharath Balasubramanian <bharathb@research.att.com>
+Submitted-by: Bharath Balasubramanian <bharathb@research.att.com>
+Submitted-at: Wed, 22 Aug 2018 14:23:46 +0000
+Reviewed-on: https://gerrit.onap.org/r/61327
+Project: music/distributed-kv-store
+Branch: refs/heads/master
