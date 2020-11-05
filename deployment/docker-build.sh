@@ -2,13 +2,14 @@
 
 BUILD_ARGS="--no-cache"
 ORG="onap"
-VERSION="1.0.0"
 PROJECT="music"
 IMAGE="distributed-kv-store"
 DOCKER_REPOSITORY="nexus3.onap.org:10003"
 IMAGE_NAME="${DOCKER_REPOSITORY}/${ORG}/${PROJECT}/${IMAGE}"
-TIMESTAMP=$(date +"%Y%m%dT%H%M%S")
+TAG_NAME=${UNIQUE_DOCKER_TAG}
 
+echo TAG_NAME: ${TAG_NAME}
+set -x
 if [ $HTTP_PROXY ]; then
     BUILD_ARGS+=" --build-arg HTTP_PROXY=${HTTP_PROXY}"
 fi
@@ -34,6 +35,10 @@ function build_image {
 function push_image {
     echo "Start push docker image."
     docker push ${IMAGE_NAME}:latest
+    if [ ! -z "${TAG_NAME}" ]; then
+      docker tag ${IMAGE_NAME}:latest ${IMAGE_NAME}:1.0-SNAPSHOT-${TAG_NAME}
+      docker push ${IMAGE_NAME}:1.0-SNAPSHOT-${TAG_NAME}
+    fi
 }
 
 function remove_binary {
