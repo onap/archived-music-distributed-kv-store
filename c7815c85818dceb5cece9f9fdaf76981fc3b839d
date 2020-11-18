@@ -173,6 +173,30 @@
       "revId": "c7815c85818dceb5cece9f9fdaf76981fc3b839d",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "376d77b9_e648df63",
+        "filename": "deployment/tag-docker-staging.sh",
+        "patchSetId": 10
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5550
+      },
+      "writtenOn": "2020-11-18T17:55:32Z",
+      "side": 1,
+      "message": "ok so it looks like I\u0027ve missed the purpose of few scripts here :)?",
+      "parentUuid": "08e7261d_24ea7b16",
+      "range": {
+        "startLine": 11,
+        "startChar": 5,
+        "endLine": 11,
+        "endChar": 6
+      },
+      "revId": "c7815c85818dceb5cece9f9fdaf76981fc3b839d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
