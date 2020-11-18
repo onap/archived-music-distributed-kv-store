@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c6e072fa_d9787dd2",
+        "filename": "deployment/tag-docker-staging.sh",
+        "patchSetId": 10
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5550
+      },
+      "writtenOn": "2020-11-18T17:48:34Z",
+      "side": 1,
+      "message": "Just a sanity question (I\u0027m always confused on LF policy here) - are STAGING and SNAPSHOT stored in the same nexus repo?",
+      "range": {
+        "startLine": 6,
+        "startChar": 35,
+        "endLine": 6,
+        "endChar": 40
+      },
+      "revId": "c7815c85818dceb5cece9f9fdaf76981fc3b839d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f0097606_bcd80404",
+        "filename": "deployment/tag-docker-staging.sh",
+        "patchSetId": 10
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5550
+      },
+      "writtenOn": "2020-11-18T17:48:34Z",
+      "side": 1,
+      "message": "I believe you want to also set `-e` to ensure job\u0027s failure in the event of unsuccessful retag.",
+      "range": {
+        "startLine": 11,
+        "startChar": 5,
+        "endLine": 11,
+        "endChar": 6
+      },
+      "revId": "c7815c85818dceb5cece9f9fdaf76981fc3b839d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
