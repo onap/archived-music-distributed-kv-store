@@ -2,6 +2,86 @@
   "comments": [
     {
       "key": {
+        "uuid": "68266135_666f6b14",
+        "filename": "csit/.gitignore",
+        "patchSetId": 10
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5550
+      },
+      "writtenOn": "2020-11-18T17:54:39Z",
+      "side": 1,
+      "message": "why?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 15
+      },
+      "revId": "c7815c85818dceb5cece9f9fdaf76981fc3b839d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b0f90a3f_0b6cb221",
+        "filename": "csit/plans/music-distributed-kv-store-test-plan/setup.sh",
+        "patchSetId": 10
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5550
+      },
+      "writtenOn": "2020-11-18T17:54:39Z",
+      "side": 1,
+      "message": "Consider `set -e` if you don\u0027t handle errors per invocation",
+      "revId": "c7815c85818dceb5cece9f9fdaf76981fc3b839d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ca435f01_64f644ff",
+        "filename": "csit/plans/music-distributed-kv-store-test-plan/setup.sh",
+        "patchSetId": 10
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5550
+      },
+      "writtenOn": "2020-11-18T17:54:39Z",
+      "side": 1,
+      "message": "I believe this script should fail if this variable is not provided? I then suggest to either `set -u` (that affects all variables so it may not be so handy) or use here null/unset bash parameter expansion -\u003e ${VAR_TO_BE_USED:?Error to display if it\u0027s missing}.",
+      "range": {
+        "startLine": 24,
+        "startChar": 19,
+        "endLine": 24,
+        "endChar": 36
+      },
+      "revId": "c7815c85818dceb5cece9f9fdaf76981fc3b839d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ca160e9a_d40d9ca6",
+        "filename": "csit/scripts/test.sh",
+        "patchSetId": 10
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5550
+      },
+      "writtenOn": "2020-11-18T17:54:39Z",
+      "side": 1,
+      "message": "I don\u0027t know what is this script for :)?",
+      "revId": "c7815c85818dceb5cece9f9fdaf76981fc3b839d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c6e072fa_d9787dd2",
         "filename": "deployment/tag-docker-staging.sh",
         "patchSetId": 10
