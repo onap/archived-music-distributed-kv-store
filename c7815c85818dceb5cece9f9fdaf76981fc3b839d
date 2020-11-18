@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "c9d4d85a_2f9ee670",
+        "filename": "deployment/tag-docker-staging.sh",
+        "patchSetId": 10
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 3949
+      },
+      "writtenOn": "2020-11-18T17:53:34Z",
+      "side": 1,
+      "message": "Yes (both go to snapshot Nexus at the moment). I have an open question to LF though about the reasons for avoiding staging Nexus and if that is still necessary in Honolulu.",
+      "parentUuid": "c6e072fa_d9787dd2",
+      "range": {
+        "startLine": 6,
+        "startChar": 35,
+        "endLine": 6,
+        "endChar": 40
+      },
+      "revId": "c7815c85818dceb5cece9f9fdaf76981fc3b839d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f0097606_bcd80404",
         "filename": "deployment/tag-docker-staging.sh",
         "patchSetId": 10
@@ -36,6 +60,30 @@
       "writtenOn": "2020-11-18T17:48:34Z",
       "side": 1,
       "message": "I believe you want to also set `-e` to ensure job\u0027s failure in the event of unsuccessful retag.",
+      "range": {
+        "startLine": 11,
+        "startChar": 5,
+        "endLine": 11,
+        "endChar": 6
+      },
+      "revId": "c7815c85818dceb5cece9f9fdaf76981fc3b839d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "08e7261d_24ea7b16",
+        "filename": "deployment/tag-docker-staging.sh",
+        "patchSetId": 10
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 3949
+      },
+      "writtenOn": "2020-11-18T17:53:34Z",
+      "side": 1,
+      "message": "I could, if this script was ever going to be used for real (I would then also improve version numbering of the tags instead of just hardcoding them as 1.0 in multiple places around these scripts)",
+      "parentUuid": "f0097606_bcd80404",
       "range": {
         "startLine": 11,
         "startChar": 5,
