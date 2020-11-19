@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "f3f42f69_8a2ea66e",
+        "filename": "csit/.gitignore",
+        "patchSetId": 10
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 3949
+      },
+      "writtenOn": "2020-11-19T11:34:07Z",
+      "side": 1,
+      "message": "Because https://gerrit.onap.org/r/c/music/distributed-kv-store/+/114637/10/csit/run-project-csit.sh (particularly line 35)\nWhether this approach (i.e. every project-specific CSIT starts by copying common parts from integration/csit and then uses those to actually run the tests) is the best one is very much unresolved and one of the topics I\u0027m hoping to receive some opinions from the community",
+      "parentUuid": "68266135_666f6b14",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 15
+      },
+      "revId": "c7815c85818dceb5cece9f9fdaf76981fc3b839d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b0f90a3f_0b6cb221",
         "filename": "csit/plans/music-distributed-kv-store-test-plan/setup.sh",
         "patchSetId": 10
@@ -36,6 +60,24 @@
       "writtenOn": "2020-11-18T17:54:39Z",
       "side": 1,
       "message": "Consider `set -e` if you don\u0027t handle errors per invocation",
+      "revId": "c7815c85818dceb5cece9f9fdaf76981fc3b839d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "caa8e935_794b7cae",
+        "filename": "csit/plans/music-distributed-kv-store-test-plan/setup.sh",
+        "patchSetId": 10
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3949
+      },
+      "writtenOn": "2020-11-19T11:34:07Z",
+      "side": 1,
+      "message": "This is music\u0027s original setup script and I\u0027m not planning to make any improvements for it that are not necessary for demonstrating the PoC",
+      "parentUuid": "b0f90a3f_0b6cb221",
       "revId": "c7815c85818dceb5cece9f9fdaf76981fc3b839d",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "f60b25c2_ff660cd3",
+        "filename": "csit/plans/music-distributed-kv-store-test-plan/setup.sh",
+        "patchSetId": 10
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 3949
+      },
+      "writtenOn": "2020-11-19T11:34:07Z",
+      "side": 1,
+      "message": "Maybe, but again, this particular script exists just for PoC purposes",
+      "parentUuid": "ca435f01_64f644ff",
+      "range": {
+        "startLine": 24,
+        "startChar": 19,
+        "endLine": 24,
+        "endChar": 36
+      },
+      "revId": "c7815c85818dceb5cece9f9fdaf76981fc3b839d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ca160e9a_d40d9ca6",
         "filename": "csit/scripts/test.sh",
         "patchSetId": 10
@@ -76,6 +142,24 @@
       "writtenOn": "2020-11-18T17:54:39Z",
       "side": 1,
       "message": "I don\u0027t know what is this script for :)?",
+      "revId": "c7815c85818dceb5cece9f9fdaf76981fc3b839d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f380b902_a42f39b5",
+        "filename": "csit/scripts/test.sh",
+        "patchSetId": 10
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3949
+      },
+      "writtenOn": "2020-11-19T11:34:07Z",
+      "side": 1,
+      "message": "Added it to check how variables behave in certain situations - no use any longer so I\u0027ll remove it",
+      "parentUuid": "ca160e9a_d40d9ca6",
       "revId": "c7815c85818dceb5cece9f9fdaf76981fc3b839d",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
@@ -188,6 +272,30 @@
       "side": 1,
       "message": "ok so it looks like I\u0027ve missed the purpose of few scripts here :)?",
       "parentUuid": "08e7261d_24ea7b16",
+      "range": {
+        "startLine": 11,
+        "startChar": 5,
+        "endLine": 11,
+        "endChar": 6
+      },
+      "revId": "c7815c85818dceb5cece9f9fdaf76981fc3b839d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2a92de4d_57e9058d",
+        "filename": "deployment/tag-docker-staging.sh",
+        "patchSetId": 10
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 3949
+      },
+      "writtenOn": "2020-11-19T11:34:07Z",
+      "side": 1,
+      "message": "Not sure what you mean? Music component is in maintenance mode and I\u0027m using this just for PoC purposes (I was actually thinking at one point that we don\u0027t need to merge this at all since the review flow PoC can be demonstrated with the mere review, but then there\u0027s also the merge verification part after this, so I guess this has to go to master after all - but I also think that these jobs will be disabled once the PoC has served its purpose)",
+      "parentUuid": "376d77b9_e648df63",
       "range": {
         "startLine": 11,
         "startChar": 5,
