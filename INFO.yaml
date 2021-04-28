@@ -1,7 +1,7 @@
 ---
 project: 'music-distributed-kv-store'
 project_creation_date: '2018-01-29'
-lifecycle_state: 'Incubation'
+lifecycle_state: 'Unmaintained'
 project_category: ''
 project_lead: &onap_releng_ptl
     name: 'Bharath Balasubramanian'
@@ -20,13 +20,13 @@ mailing_list:
     tag: '<[sub-project_name]>'
 realtime_discussion: ''
 meetings:
-    - type: 'zoom'
-      agenda: 'https://wiki.onap.org/display/DW/MUSIC+Project'
-      url: 'https://wiki.onap.org/display/DW/MUSIC+Project'
+    - type: 'n/a'
+      agenda: 'n/a'
+      url: 'n/a'
       server: 'n/a'
       channel: 'n/a'
-      repeats: 'weekly'
-      time: '14:00 UTC'
+      repeats: 'n/a'
+      time: 'n/a'
 repositories:
     - 'music'
     - 'music-distributed-kv-store'
